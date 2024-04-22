@@ -34,7 +34,7 @@ export const Sidebar = () => {
     navigate("/");
   };
   const onLogOut = () => {
-    navigate("/");
+    navigate("/login");
   };
 
   const onClickParent = ({ id, children, path }, e) => {
@@ -61,7 +61,8 @@ export const Sidebar = () => {
             const active = open.includes(parent.id);
             const { icon: Icon } = parent;
             const activePath = location.pathname?.includes(parent.path);
-            return (
+
+            return !parent.hidden ? (
               <React.Fragment key={parent.id}>
                 <MenuItem
                   onClick={(e) => onClickParent(parent, e)}
@@ -88,7 +89,7 @@ export const Sidebar = () => {
                   })}
                 </ChildWrapper>
               </React.Fragment>
-            );
+            ) : null;
           })}
         </Menu>
 

@@ -272,6 +272,22 @@ const sidebar = [
       },
     ],
   },
+  {
+    id: 9,
+    title: "Log In",
+    path: "/login",
+    isPrivate: true,
+    element: Generics,
+    hidden: true,
+  },
+  {
+    id: 10,
+    title: "Reset",
+    path: "/reset",
+    isPrivate: true,
+    element: Generics,
+    hidden: true,
+  },
 ];
 
 export default sidebar;

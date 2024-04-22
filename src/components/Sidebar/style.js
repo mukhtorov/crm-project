@@ -144,7 +144,7 @@ MenuItem.Title = styled.div`
 
 const ChildWrapper = styled.div`
   margin-left: 35px;
-  height: ${({ active }) => (active ? "auto" : "0px")};
+  height: ${({ active }) => (active === "true" ? "auto" : "0px")};
   overflow: hidden;
 `;
 

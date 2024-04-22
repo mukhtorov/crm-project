@@ -23,14 +23,30 @@ export const Root = () => {
               });
             } else
               return (
-                <Route
-                  key={parent.id}
-                  path={parent.path}
-                  element={<ElementParent />}
-                />
+                !parent.hidden && (
+                  <Route
+                    key={parent.id}
+                    path={parent.path}
+                    element={<ElementParent />}
+                  />
+                )
               );
           })}
         </Route>
+
+        {sidebar.map((parent) => {
+          const ElementParent = parent.element;
+          return (
+            parent.hidden && (
+              <Route
+                key={parent.id}
+                path={parent.path}
+                element={<ElementParent />}
+              />
+            )
+          );
+        })}
+
         <Route path="/" element={<Navigate to={"/analitika"} />} />
         <Route path="*" element={<h1>404 not found</h1>} />
       </Routes>
