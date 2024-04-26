@@ -31,6 +31,7 @@ const Side = styled.div`
 `;
 const Body = styled.div`
   flex: 1;
+  overflow-y: scroll;
   /* border: 2px solid blue; */
 `;
 const Wrapper = styled.div`

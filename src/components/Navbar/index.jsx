@@ -1,7 +1,22 @@
-import { Container } from "./style";
+import DateTimePicker from "./DateTimePicker";
+import GenericSelect from "./Select";
+import Time from "./Time";
+import { Container, Input, InputWrapper, SearchIcon, Section } from "./style";
 
 export const Navbar = () => {
-  return <Container>Navbar</Container>;
+  return (
+    <Container>
+      <InputWrapper>
+        <SearchIcon />
+        <Input placeholder="search" />
+      </InputWrapper>
+      <Section>
+        <Time />
+        <DateTimePicker />
+        <GenericSelect />
+      </Section>
+    </Container>
+  );
 };
 
 export default Navbar;
