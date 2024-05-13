@@ -9,6 +9,8 @@ const Container = styled.div`
   background-color: white;
   height: 60px;
   padding: 0 16px 0 24px;
+  position: sticky;
+  top: 0;
 `;
 
 const SearchIcon = styled(search)`
