@@ -32,11 +32,12 @@ const Side = styled.div`
 `;
 const Body = styled.div`
   flex: 1;
-  overflow: hidden;
-  overflow-y: scroll;
   height: 100vh;
+  min-width: calc(1440px - 280px);
   /* border: 2px solid blue; */
+  overflow-y: scroll;
 `;
+
 const Wrapper = styled.div`
   /* border: 2px solid blue; */
   margin: 16px;
