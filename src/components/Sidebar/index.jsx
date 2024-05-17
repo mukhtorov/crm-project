@@ -16,6 +16,7 @@ import Navbar from "../Navbar";
 import { Profile } from "./profile";
 import sidebar from "../../utils/sidebar";
 import React, { useEffect, useState } from "react";
+import { Breadcrumb } from "../Generics/BreadCrumb";
 
 export const Sidebar = () => {
   const [open, setOpen] = useState([]);
@@ -37,7 +38,9 @@ export const Sidebar = () => {
     navigate("/login");
   };
 
-  const onClickParent = ({ id, children, path }, e) => {
+  const onClickParent = ({ id, children, path, title }, e) => {
+    e.preventDefault();
+
     if (open?.includes(id)) {
       let data = open.filter((val) => val !== id);
       localStorage.setItem("open", JSON.stringify(data));
@@ -47,9 +50,12 @@ export const Sidebar = () => {
       setOpen([...open, id]);
     }
     if (!children) {
-      e.preventDefault();
-      navigate(path);
+      navigate(path, { state: { parent: title } });
     }
+  };
+  const onClickChild = (parent, child, path, e) => {
+    e.preventDefault();
+    navigate(path, { state: { parent, child } });
   };
   return (
     <Container>
@@ -81,6 +87,9 @@ export const Sidebar = () => {
                       <MenuItem
                         key={child?.id}
                         to={child.path}
+                        onClick={(e) =>
+                          onClickChild(parent.title, child.title, child.path, e)
+                        }
                         active={(location.pathname === child.path).toString()}
                       >
                         <MenuItem.Title>{child?.title}</MenuItem.Title>
@@ -100,6 +109,7 @@ export const Sidebar = () => {
       <Body>
         <Navbar />
         <Wrapper>
+          <Breadcrumb />
           <Outlet />
         </Wrapper>
       </Body>
