@@ -9,6 +9,8 @@ import HR from "../assets/icons/hr.svg?react";
 import Settings from "../assets/icons/setting.svg?react";
 // Components
 import { Generics } from "../view/Generics";
+import { AnalitikaView } from "../view/AnalitikaView";
+import AllLidsView from "../view/Lids/All";
 // import { AnalitikaView } from "../views/Analitika";
 // import LidsAllView from "../views/LidsAll";
 // import FirstClassView from "../views/FirstClass";
@@ -23,7 +25,7 @@ const sidebar = [
     path: "/analitika",
     icon: Analitika,
     isPrivate: true,
-    element: Generics,
+    element: AnalitikaView,
     role: ["admin", "manager"],
   },
   {
@@ -41,7 +43,7 @@ const sidebar = [
         title: "Barcha Lidlar",
         path: "/lidlar/all-lids",
         isPrivate: true,
-        element: Generics,
+        element: AllLidsView,
         role: ["admin", "manager"],
       },
       {

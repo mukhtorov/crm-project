@@ -8,6 +8,7 @@ const Arrow = styled(arrow)`
   margin-left: auto;
   transform: ${({ active }) => active === "true" && `rotate(90deg)`};
   transition: all 0.1s;
+  /* z-index: 0; */
 `;
 
 const Container = styled.div`
@@ -31,13 +32,17 @@ const Side = styled.div`
 `;
 const Body = styled.div`
   flex: 1;
-  overflow-y: scroll;
+  height: 100vh;
+  min-width: calc(1440px - 280px);
   /* border: 2px solid blue; */
+  overflow-y: scroll;
 `;
+
 const Wrapper = styled.div`
-  border: 2px solid blue;
+  /* border: 2px solid blue; */
   margin: 16px;
   background-color: white;
+  border-radius: 8px;
 `;
 const Logo = styled.div`
   position: sticky;
@@ -50,6 +55,7 @@ const Logo = styled.div`
   border-bottom: 1px solid rgba(222, 225, 227, 1);
   cursor: pointer;
   background-color: white;
+  z-index: 999;
 `;
 
 const LogOut = styled(Logo)`

@@ -1,15 +1,5 @@
 import styled from "styled-components";
-
-const getValue = (value) => {
-  switch (typeof value) {
-    case "string":
-      return value;
-    case "number":
-      return `${value}px`;
-    default:
-      return "none";
-  }
-};
+import getValue from "../../../hooks/getStyleValue";
 
 export const Container = styled.div`
   display: flex;
