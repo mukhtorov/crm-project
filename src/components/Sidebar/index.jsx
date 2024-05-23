@@ -16,7 +16,6 @@ import Navbar from "../Navbar";
 import { Profile } from "./profile";
 import sidebar from "../../utils/sidebar";
 import React, { useEffect, useState } from "react";
-import { Breadcrumb } from "../Generics/BreadCrumb";
 
 export const Sidebar = () => {
   const [open, setOpen] = useState([]);
@@ -109,7 +108,6 @@ export const Sidebar = () => {
       <Body>
         <Navbar />
         <Wrapper>
-          <Breadcrumb />
           <Outlet />
         </Wrapper>
       </Body>

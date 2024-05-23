@@ -7,7 +7,6 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import TableSortLabel from "@mui/material/TableSortLabel";
 import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
 
@@ -29,8 +28,11 @@ function EnhancedTableHead(props) {
           />
         </TableCell>
         {headCells.map((headCell) => (
-          <TableCell key={headCell.id}>
-            <TableSortLabel>{headCell.label}</TableSortLabel>
+          <TableCell
+            sx={{ color: "#929FAF", fontSize: "16px", cursor: "pointer" }}
+            key={headCell.id}
+          >
+            {headCell.label}
           </TableCell>
         ))}
       </TableRow>
@@ -40,7 +42,7 @@ function EnhancedTableHead(props) {
 
 export function GenericTable(props) {
   const [selected, setSelected] = React.useState([]);
-  const { headCells, rows } = props;
+  const { headCells, rows, open } = props;
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
@@ -74,6 +76,23 @@ export function GenericTable(props) {
 
   return (
     <Box sx={{ width: "100%" }}>
+      <Box
+        sx={{
+          marginTop: "24px",
+          height: open ? "64px" : 0,
+          overflow: "hidden",
+          border: 0,
+        }}
+      >
+        <Table>
+          <TableBody>
+            <TableRow>
+              <TableCell sx={{ border: 0 }}>TEST</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </Box>
+
       <Paper sx={{ width: "100%", mb: 2 }}>
         <TableContainer>
           <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
@@ -110,7 +129,11 @@ export function GenericTable(props) {
                     </TableCell>
 
                     {headCells.map((val) => (
-                      <TableCell align="left" key={val.id}>
+                      <TableCell
+                        align="left"
+                        key={val.id}
+                        sx={{ color: "#253E5F" }}
+                      >
                         {row[val.id]}
                       </TableCell>
                     ))}
