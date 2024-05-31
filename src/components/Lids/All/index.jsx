@@ -2,6 +2,7 @@ import { useState } from "react";
 import { GenericTable } from "../../Generics/Table";
 import { Container } from "./style";
 import { Breadcrumb } from "../../Generics/BreadCrumb";
+import GenericButton from "../../Generics/Button";
 
 export const AllLids = () => {
   const [open, setOpen] = useState(false);
@@ -41,9 +42,15 @@ export const AllLids = () => {
   return (
     <Container>
       <Breadcrumb>
-        <button onClick={() => setOpen(!open)}>Filter</button>
-        <button onClick={() => setOpen(!open)}>Import</button>
-        <button onClick={() => setOpen(!open)}>Buyurtma berish</button>
+        <GenericButton type="import" onClick={() => setOpen(!open)}>
+          Import
+        </GenericButton>
+        <GenericButton type="filter" onClick={() => setOpen(!open)}>
+          Filter
+        </GenericButton>
+        <GenericButton type="add" onClick={() => setOpen(!open)}>
+          Buyurtma berish
+        </GenericButton>
       </Breadcrumb>
       <GenericTable open={open} headCells={headCells} rows={rows} />
     </Container>
