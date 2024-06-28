@@ -1,12 +1,15 @@
+/* eslint-disable react/no-unescaped-entities */
 import { useState } from "react";
 import { GenericTable } from "../../Generics/Table";
 import { Action, Container } from "./style";
 import { Breadcrumb } from "../../Generics/BreadCrumb";
 import GenericButton from "../../Generics/Button";
 import GenericSelect from "../../Generics/Select";
+import { Modal } from "../../Generics/Modal";
 
 export const AllLids = () => {
   const [open, setOpen] = useState(false);
+  const [modalOpen, setModal] = useState(false);
   const onEdit = (e) => {
     e.stopPropagation();
   };
@@ -63,6 +66,9 @@ export const AllLids = () => {
   ];
   return (
     <Container>
+      <Modal open={modalOpen}>
+        <GenericButton type="add">Talaba qo'shish</GenericButton>
+      </Modal>
       <Breadcrumb>
         <GenericButton type="import" onClick={() => setOpen(!open)}>
           Import
@@ -70,8 +76,8 @@ export const AllLids = () => {
         <GenericButton type="filter" onClick={() => setOpen(!open)}>
           Filter
         </GenericButton>
-        <GenericButton type="add" onClick={() => setOpen(!open)}>
-          Buyurtma berish
+        <GenericButton type="add" onClick={() => setModal(!modalOpen)}>
+          Lid qo'shish
         </GenericButton>
       </Breadcrumb>
       <GenericTable open={open} headCells={headCells} rows={rows}>
