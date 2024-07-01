@@ -5,7 +5,7 @@ const Container = styled.div`
   display: inherit;
   align-items: inherit;
   font-family: Montserrat;
-  font-size: 20px;
+  font-size: ${(({ size }) => getValue(size), "20px")};
   font-weight: ${({ type }) => (!type || type === "primary" ? 600 : 400)};
   line-height: 28px;
   text-align: left;

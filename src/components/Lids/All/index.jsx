@@ -5,7 +5,7 @@ import { Action, Container } from "./style";
 import { Breadcrumb } from "../../Generics/BreadCrumb";
 import GenericButton from "../../Generics/Button";
 import GenericSelect from "../../Generics/Select";
-import { Modal } from "../../Generics/Modal";
+import AllLidsModal from "./modal";
 
 export const AllLids = () => {
   const [open, setOpen] = useState(false);
@@ -64,11 +64,16 @@ export const AllLids = () => {
     { value: "russian", title: "Russian" },
     { value: "english", title: "English" },
   ];
+
+  const onToggleModal = () => {
+    setModal(!modalOpen);
+  };
+  const onSave = () => {
+    // setModal(!modalOpen);
+  };
   return (
     <Container>
-      <Modal open={modalOpen}>
-        <GenericButton type="add">Talaba qo'shish</GenericButton>
-      </Modal>
+      <AllLidsModal open={modalOpen} onClose={onToggleModal} onSave={onSave} />
       <Breadcrumb>
         <GenericButton type="import" onClick={() => setOpen(!open)}>
           Import
@@ -76,7 +81,7 @@ export const AllLids = () => {
         <GenericButton type="filter" onClick={() => setOpen(!open)}>
           Filter
         </GenericButton>
-        <GenericButton type="add" onClick={() => setModal(!modalOpen)}>
+        <GenericButton type="add" onClick={onToggleModal}>
           Lid qo'shish
         </GenericButton>
       </Breadcrumb>

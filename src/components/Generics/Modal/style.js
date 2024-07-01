@@ -13,10 +13,16 @@ export const Wrapper = styled.div`
   max-width: 900px;
   min-width: 200px;
   width: fit-content;
-  height: 300px;
   background-color: white;
 
   padding: 32px 48px 32px 48px;
   gap: 16px;
   border-radius: 8px;
+`;
+
+export const Footer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 32px;
 `;
