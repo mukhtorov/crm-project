@@ -87,7 +87,7 @@ export function GenericTable(props) {
       >
         <Table>
           <TableBody>
-            <TableRow sx={{ display: "flex", justifyContent: "space-between" }}>
+            <TableRow sx={{ display: "flex", gap: 5 }}>
               {props?.children}
             </TableRow>
           </TableBody>
@@ -135,7 +135,7 @@ export function GenericTable(props) {
                         key={val.id}
                         sx={{ color: "#253E5F" }}
                       >
-                        {val.render ? val.render : row[val.id]}
+                        {val?.render ? val?.render(row) : row[val.id]}
                       </TableCell>
                     ))}
                   </TableRow>

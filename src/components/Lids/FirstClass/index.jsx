@@ -6,8 +6,11 @@ import { Breadcrumb } from "../../Generics/BreadCrumb";
 import GenericButton from "../../Generics/Button";
 import GenericSelect from "../../Generics/Select";
 import AllLidsModal from "./modal";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import moment from "moment";
 
-export const AllLids = () => {
+export const FirstClass = () => {
   const [open, setOpen] = useState(false);
   const [modalOpen, setModal] = useState(false);
   const [modalProps, setModalProps] = useState({});
@@ -16,9 +19,7 @@ export const AllLids = () => {
     setModal(!modalOpen);
     setModalProps(res);
   };
-  const onMove = (e) => {
-    e.stopPropagation();
-  };
+
   const headCells = [
     { id: "name", label: "O'quvchining ismi" },
     { id: "group", label: "Guruh / Fan" },
@@ -31,7 +32,7 @@ export const AllLids = () => {
       render: (res) => (
         <Action>
           <Action.Edit onClick={(e) => onEdit(e, res)} />
-          <Action.Move onClick={onMove} />
+          {/* <Action.Move onClick={onMove} /> */}
         </Action>
       ),
     },
@@ -96,18 +97,20 @@ export const AllLids = () => {
         <GenericButton type="filter" onClick={() => setOpen(!open)}>
           Filter
         </GenericButton>
-        <GenericButton type="add" onClick={onToggleModal}>
-          Lid qo'shish
-        </GenericButton>
       </Breadcrumb>
       <GenericTable open={open} headCells={headCells} rows={rows}>
-        <GenericSelect data={data1} />
-        <GenericSelect data={data1} />
-        <GenericSelect data={data1} />
-        <GenericSelect data={data1} />
+        <LocalizationProvider dateAdapter={AdapterMoment}>
+          <DatePicker
+            defaultValue={moment()}
+            views={["year", "month", "day"]}
+            slotProps={{ textField: { size: "small" } }}
+          />
+        </LocalizationProvider>
         <GenericSelect data={data1} />
         <GenericSelect data={data1} />
       </GenericTable>
     </Container>
   );
 };
+
+export default FirstClass;
