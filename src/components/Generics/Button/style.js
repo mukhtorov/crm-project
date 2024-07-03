@@ -27,6 +27,7 @@ const Button = styled.button`
   font-weight: 500;
   line-height: 20px;
   gap: 8px;
+  white-space: nowrap;
 
   &:active {
     transform: scale(0.98);
@@ -62,7 +63,7 @@ Button.Primay = styled(Button)`
 Button.Delete = styled(Button)`
   border-color: #ffa39e;
   color: #f5222d;
-  border: 0;
+  border: 1px solid;
 `;
 
 export { Button };
