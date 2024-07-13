@@ -39,6 +39,7 @@ function EnhancedTableHead(props) {
               cursor: "pointer",
               whiteSpace: "nowrap",
             }}
+            align={headCell?.align || "left"}
             key={headCell.id}
           >
             {headCell.label}
@@ -147,7 +148,7 @@ export function GenericTable(props) {
 
                     {headCells.map((val) => (
                       <TableCell
-                        align="left"
+                        align={val?.align || "left"}
                         key={val.id}
                         sx={{ color: "#253E5F" }}
                       >
