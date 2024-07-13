@@ -89,7 +89,9 @@ export const Sidebar = () => {
                         onClick={(e) =>
                           onClickChild(parent.title, child.title, child.path, e)
                         }
-                        active={(location.pathname === child.path).toString()}
+                        active={location.pathname
+                          ?.includes(child.path)
+                          .toString()}
                       >
                         <MenuItem.Title>{child?.title}</MenuItem.Title>
                       </MenuItem>

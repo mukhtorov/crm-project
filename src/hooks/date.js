@@ -1,16 +1,16 @@
 export const months = [
-  { short: "Yan", full: "Yanvar" },
-  { short: "Fev", full: "Fevral" },
-  { short: "Mar", full: "Mart" },
-  { short: "Apr", full: "Aprel" },
-  { short: "May", full: "May" },
-  { short: "Iyun", full: "Iyun" },
-  { short: "Iyul", full: "Iyul" },
-  { short: "Avg", full: "Avgust" },
-  { short: "Sen", full: "Sentabr" },
-  { short: "Okt", full: "Oktyabr" },
-  { short: "Noy", full: "Noyabr" },
-  { short: "Dek", full: "Dekabr" },
+  { num: 1, short: "Yan", full: "Yanvar" },
+  { num: 2, short: "Fev", full: "Fevral" },
+  { num: 3, short: "Mar", full: "Mart" },
+  { num: 4, short: "Apr", full: "Aprel" },
+  { num: 5, short: "May", full: "May" },
+  { num: 6, short: "Iyun", full: "Iyun" },
+  { num: 7, short: "Iyul", full: "Iyul" },
+  { num: 8, short: "Avg", full: "Avgust" },
+  { num: 9, short: "Sen", full: "Sentabr" },
+  { num: 10, short: "Okt", full: "Oktyabr" },
+  { num: 11, short: "Noy", full: "Noyabr" },
+  { num: 12, short: "Dek", full: "Dekabr" },
 ];
 
 export const weeks = [
@@ -31,6 +31,10 @@ function getPlusDate(number) {
   let date = new Date(new Date().setDate(new Date().getDate() + number));
   return date;
 }
+function addPlus(today) {
+  let date = new Date(new Date().setDate(today.getDate() + 1));
+  return date;
+}
 
 export const useDate = () => {
   const d = new Date();
@@ -47,8 +51,9 @@ export const useDate = () => {
     getPlusDate(2 + count),
     getPlusDate(3 + count),
   ];
+  let addDay = (today) => addPlus(today);
 
-  return { year, day, month, date, week };
+  return { year, day, month, date, week, addDay };
 };
 
 export default useDate;

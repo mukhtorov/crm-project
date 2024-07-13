@@ -10,7 +10,7 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import moment from "moment";
 
-export const ArchiveStudents = () => {
+export const Schedule = () => {
   const [open, setOpen] = useState(false);
   const [modalOpen, setModal] = useState(false);
   const [modalProps, setModalProps] = useState({});
@@ -161,4 +161,4 @@ export const ArchiveStudents = () => {
   );
 };
 
-export default ArchiveStudents;
+export default Schedule;

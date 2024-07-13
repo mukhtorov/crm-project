@@ -2,12 +2,14 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { Container } from "./style";
 import sidebar from "../utils/sidebar";
 import { Sidebar } from "../components/Sidebar";
+import Checkin from "../components/Guruhlar/Guruhlar/Checkin";
 
 export const Root = () => {
   return (
     <Container>
       <Routes>
         <Route element={<Sidebar />}>
+          <Route path={"/guruhlar/guruhlar/checkin"} element={<Checkin />} />;
           {sidebar.map((parent) => {
             const ElementParent = parent.element;
             if (parent?.children) {

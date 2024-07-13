@@ -17,6 +17,8 @@ const getColor = ({ title }) => {
       return "#FFF0F6";
     case "Sozlamalar":
       return "#FFF2E8";
+    default:
+      return "#FFF2E8";
   }
 };
 
