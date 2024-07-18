@@ -46,4 +46,5 @@ Devider.Title = styled.div`
 export const Section = styled.div`
   display: flex;
   padding: 12px 0;
+  align-items: center;
 `;
