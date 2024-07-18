@@ -150,7 +150,7 @@ export function GenericTable(props) {
                       <TableCell
                         align={val?.align || "left"}
                         key={val.id}
-                        sx={{ color: "#253E5F" }}
+                        sx={{ color: "#253E5F", position: "relative" }}
                       >
                         {val?.render ? val?.render(row) : row[val.id]}
                       </TableCell>
