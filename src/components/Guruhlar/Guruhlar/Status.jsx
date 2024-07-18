@@ -4,31 +4,9 @@ import StatusModal from "./StatusModal";
 import { Icon } from "./style";
 
 export const Status = ({ value }) => {
-  const [open, setOpen] = useState(false);
-
-  //   const onClcikStatus = () => {};
-
-  useEffect(() => {
-    document.addEventListener("mousedown", () => {
-      setOpen(false);
-    });
-  }, []);
-
   switch (value) {
     case "keldi":
-      return (
-        <div
-          onClick={() => setOpen(true)}
-          style={{
-            // position: "relative",
-            display: "flex",
-            width: "fit-content",
-          }}
-        >
-          <StatusModal open={open} />
-          <Icon.Keldi />
-        </div>
-      );
+      return <Icon.Keldi />;
     case "sababli":
       return <Icon.Sababli />;
     case "sababsiz":
@@ -36,8 +14,35 @@ export const Status = ({ value }) => {
     case "birinchi":
       return <Icon.Birinchi />;
     default:
-      return value;
+      return "value";
   }
 };
 
-export default Status;
+const StatusWrapper = ({ value }) => {
+  const [open, setOpen] = useState(false);
+  const [align, setAlign] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    document.addEventListener("mousedown", () => {
+      setOpen(false);
+    });
+  }, []);
+
+  return (
+    <div
+      onClick={(e) => {
+        setAlign({ x: e.pageX, y: e.pageY });
+        setOpen(true);
+      }}
+      style={{
+        display: "flex",
+        justifyContent: "center",
+      }}
+    >
+      <StatusModal open={open} align={align} />
+      <Status value={value} />
+    </div>
+  );
+};
+
+export default StatusWrapper;

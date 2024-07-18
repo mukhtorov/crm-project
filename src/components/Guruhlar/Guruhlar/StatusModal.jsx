@@ -1,12 +1,23 @@
 /* eslint-disable react/prop-types */
 
-import { Arrow, ModalContainer } from "./style";
+import { Arrow, Icon, ModalContainer, StatusWrapper } from "./style";
 
-export const StatusModal = ({ open }) => {
+export const StatusModal = ({ open, align }) => {
   return open ? (
-    <ModalContainer>
+    <ModalContainer x={align.x} y={align.y}>
       <Arrow />
-      StatusModal
+      <StatusWrapper>
+        <Icon.Keldi /> Keldi
+      </StatusWrapper>
+      <StatusWrapper>
+        <Icon.Birinchi /> Birinchi Dars
+      </StatusWrapper>
+      <StatusWrapper>
+        <Icon.Sababli /> Sabali
+      </StatusWrapper>
+      <StatusWrapper>
+        <Icon.Sababsiz /> Sababsiz
+      </StatusWrapper>
     </ModalContainer>
   ) : null;
 };

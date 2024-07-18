@@ -45,11 +45,9 @@ export const ModalContainer = styled.div`
   height: 200px;
   background: white;
   border-radius: 8px;
-  /* margin: 40px 0px 0px -70px; */
   transform: translate(-50%, 15%);
-  top: 50%;
-  left: 50%;
-  z-index: 999999;
+  top: ${({ y }) => `${y}px`};
+  left: ${({ x }) => `${x}px`};
 `;
 
 export const Arrow = styled.div`
@@ -61,4 +59,18 @@ export const Arrow = styled.div`
   margin-top: -16px;
   background-color: white;
   border-color: #f0f0f0 transparent transparent #f0f0f0;
+`;
+
+export const StatusWrapper = styled.div`
+  display: flex;
+  /* height: 32px; */
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 10px 15px;
+  /* margin: 5px 0; */
+  &:hover {
+    background: #f8fafc;
+  }
 `;
