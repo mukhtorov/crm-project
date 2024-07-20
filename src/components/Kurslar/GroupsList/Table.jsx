@@ -10,6 +10,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import Button from "../../Generics/Button";
 import { Delete, Edit, Status, TimelineWrapper, Title } from "./tableStyle";
 
 const styleCell = {
@@ -23,7 +24,9 @@ const styleCell = {
 function Row(props) {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
-  console.log(row, "rooooow");
+  const onAddKurs = (e) => {
+    e.stopPropagation();
+  };
   return (
     <React.Fragment>
       <TableRow
@@ -45,7 +48,20 @@ function Row(props) {
         >
           {row.title}
         </TableCell>
-        <TableCell sx={{ border: 0 }} align="right">
+        {/* <TableCell align="right">
+          <Button type="add">Kurs qo'shish</Button>
+        </TableCell> */}
+        <TableCell
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "flex-end",
+            alignItems: "center",
+            border: 0,
+          }}
+          align="right"
+        >
+          <Button onClick={onAddKurs} type="add"></Button>
           <Edit />
           <Delete />
         </TableCell>
@@ -57,7 +73,6 @@ function Row(props) {
               <Table size="small" aria-label="purchases">
                 <TableBody>
                   {row?.groups?.map((rw) => {
-                    console.log(rw, "rooww");
                     return (
                       <TableRow
                         key={rw.date}

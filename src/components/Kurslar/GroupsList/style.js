@@ -74,3 +74,53 @@ export const StatusWrapper = styled.div`
     background: #f8fafc;
   }
 `;
+
+export const Devider = styled.div`
+  display: flex;
+  margin-top: 16px;
+`;
+
+Devider.Role = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 8px;
+  /*
+  border: 1px solid #91d5ff;
+   border-left: 0;
+  border-radius: 0px 8px 8px 0px; */
+`;
+Devider.Filiallar = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+  gap: 8px;
+`;
+
+Devider.Title = styled.div`
+  font-family: Montserrat;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  color: #253e5f80;
+`;
+
+export const Section = styled.div`
+  display: flex;
+  /* padding: 12px 0; */
+  align-items: center;
+  border: 1px solid #f0f0f0;
+  border-radius: 4px 0 0 4px;
+  background-color: #f8fafc;
+  height: 40px;
+`;
+
+export const Input = styled.input`
+  height: 40px;
+  outline: none;
+  border: 1px solid #f0f0f0;
+  border-left: none;
+  border-radius: 0px 4px 4px 0px;
+  padding-left: 15px;
+`;

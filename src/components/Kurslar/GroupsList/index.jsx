@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Action, Container } from "./style";
 import { Breadcrumb } from "../../Generics/BreadCrumb";
 import GenericButton from "../../Generics/Button";
-import AllLidsModal from "./modal";
+import GroupModal from "./GroupModal";
 import { rows } from "../../../mock/groups";
 import CollapsibleTable from "./Table";
 
@@ -42,7 +42,7 @@ export const GroupsList = () => {
   };
   return (
     <Container>
-      <AllLidsModal
+      <GroupModal
         data={modalProps}
         open={modalOpen}
         onClose={onToggleModal}
