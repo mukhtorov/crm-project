@@ -10,8 +10,9 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import Button from "../../Generics/Button";
-import { Delete, Edit, Status, TimelineWrapper, Title } from "./tableStyle";
+import Button from "../../../Generics/Button";
+import CourseModal from "../CourseModal";
+import { Delete, Edit, Status, TimelineWrapper, Title } from "./style";
 
 const styleCell = {
   display: "flex",
@@ -24,11 +25,20 @@ const styleCell = {
 function Row(props) {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
+  const [openAdd, setOpenAdd] = React.useState(false);
   const onAddKurs = (e) => {
     e.stopPropagation();
+    setOpenAdd(!openAdd);
+  };
+  const onSave = (e) => {
+    e.stopPropagation();
+
+    setOpenAdd(!openAdd);
   };
   return (
     <React.Fragment>
+      <CourseModal open={openAdd} onClose={onAddKurs} onSave={onSave} />
+
       <TableRow
         sx={{
           ":hover": { background: "#F8FAFC", cursor: "pointer" },
@@ -48,9 +58,7 @@ function Row(props) {
         >
           {row.title}
         </TableCell>
-        {/* <TableCell align="right">
-          <Button type="add">Kurs qo'shish</Button>
-        </TableCell> */}
+
         <TableCell
           sx={{
             display: "flex",

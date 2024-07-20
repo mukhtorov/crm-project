@@ -5,49 +5,44 @@ import GenericInput from "../../Generics/Input";
 import Subtitle from "../../Generics/Subtitle";
 import GenericSelect from "../../Generics/Select";
 import Title from "../../Generics/Title";
+import MultipleSelect from "./Multiselect";
 
-export const AllLidsModal = (props) => {
+export const CourseModal = (props) => {
   const { data } = props;
   const selectData = data && [
     { value: "Frontend", title: "Frontend" },
     { value: "Backend", title: "Backend" },
   ];
-  console.log(data, "data");
   return (
     <Modal {...props}>
-      <Title size="34px">Lid Qo'shish</Title>
+      <Title size="34px">Kurs Qo'shish</Title>
+      {/* Darajalar */}
+      <Subtitle mt={16} mb={8} color={"#929FAF"}>
+        Darajalar
+      </Subtitle>
+      <GenericSelect data={selectData} width={"100%"} value={data?.date} />
+      {/* Hafta kunlari */}
+      <Subtitle mt={16} mb={8} color={"#929FAF"}>
+        Hafta kunlari
+      </Subtitle>
+      <MultipleSelect />
       {/* full name */}
       <Subtitle mt={16} mb={8} color={"#929FAF"}>
-        Studentning ismi
+        Boshlanish vaqti
       </Subtitle>
       <GenericInput fontWeight={500} width={500} value={data?.name} />
       {/* yo'nalish */}
       <Subtitle mt={16} mb={8} color={"#929FAF"}>
-        Yo'nalishni tanlang
+        Tugash vaqti
       </Subtitle>
-      <GenericSelect data={selectData} width={"100%"} value={data?.group} />
-      {/* daraja */}
+      <GenericInput fontWeight={500} width={500} value={data?.name} />
+      {/* Ustozlar */}
       <Subtitle mt={16} mb={8} color={"#929FAF"}>
-        Darajangizni tanlang
+        Ustozlar
       </Subtitle>
-      <GenericSelect data={selectData} width={"100%"} value={data?.level} />
-      {/* Kun */}
-      <Subtitle mt={16} mb={8} color={"#929FAF"}>
-        Kun tanlang
-      </Subtitle>
-      <GenericSelect data={selectData} width={"100%"} value={data?.days} />
-      {/* Kelish sanasi */}
-      <Subtitle mt={16} mb={8} color={"#929FAF"}>
-        Boshlash sanasini tanlang
-      </Subtitle>
-      <GenericSelect data={selectData} width={"100%"} value={data?.date} />
-      {/* izoh */}
-      <Subtitle mt={16} mb={8} color={"#929FAF"}>
-        Izoh
-      </Subtitle>
-      <GenericInput fontWeight={500} width={500} />
+      <MultipleSelect />
     </Modal>
   );
 };
 
-export default AllLidsModal;
+export default CourseModal;

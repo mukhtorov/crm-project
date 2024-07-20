@@ -24,7 +24,7 @@ export const Modal = (props) => {
             </Footer>
           </Wrapper>
         </Container>,
-        document.body
+        document.getElementById("modal")
       )
     : null;
 };

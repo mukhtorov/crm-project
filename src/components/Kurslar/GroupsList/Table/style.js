@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import edit from "../../../assets/icons/edit.svg?react";
-import del from "../../../assets/icons/delete.svg?react";
+import edit from "../../../../assets/icons/edit.svg?react";
+import del from "../../../../assets/icons/delete.svg?react";
 
 export const Edit = styled(edit)`
   padding: 4px;
