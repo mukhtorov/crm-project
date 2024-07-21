@@ -1,8 +1,9 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
-import { Container } from "./style";
+import { Container, Status } from "./style";
 // import GenericButton from "../../../Generics/Button";
 import GenericTable from "../../../Generics/Table";
+import Switch from "@mui/material/Switch";
 
 export const Xabarnoma = () => {
   const [open] = useState(false);
@@ -10,29 +11,38 @@ export const Xabarnoma = () => {
   const rows = [
     {
       id: 1,
-      location: "Bunyodkor kochasi, 65-uy, Chilonzor",
-      filial: "Chilonzor",
-      href: "https://maps.app.goo.gl/3b4PMXmkiJ1uZZKs8",
+      xabarnoma: "Dars vaqtini eslatish",
+      time: "18:00",
+      status: true,
     },
     {
       id: 2,
-      location: "Abdulla Qodiry, Shayhontohur",
-      filial: "Ganga",
-      href: "https://maps.app.goo.gl/3b4PMXmkiJ1uZZKs8",
+      xabarnoma: "Vazifalarni eslatish",
+      time: "20:00",
+      status: false,
+    },
+    {
+      id: 3,
+      xabarnoma: "To'lovlarni eslatish",
+      time: "21:00",
+      status: true,
     },
   ];
   const cells = [
-    { id: "filial", label: "Filiallar" },
+    { id: "xabarnoma", label: "Xabarnoma turi" },
     {
-      id: "location",
-      label: "Manzil",
+      id: "time",
+      label: "Vaqti",
+      render: (props) => {
+        return <Status>{props?.time}</Status>;
+      },
+    },
+    {
+      id: "status",
+      label: "Faollashtirish",
       align: "right",
       render: (props) => {
-        return (
-          <a href={props?.href} target="_blank">
-            {props?.location}
-          </a>
-        );
+        return <Switch defaultChecked={props?.status} />;
       },
     },
   ];
