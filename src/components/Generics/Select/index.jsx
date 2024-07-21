@@ -19,12 +19,18 @@ export const GenericSelect = (props) => {
         m: 0,
         minWidth: 120,
         width: width || 150,
+        height: props?.height || "42px !important",
         // marginTop: props?.mt || 0,
       }}
       size="small"
     >
       <Select
-        sx={{ color: "#929FAF", borderColor: "#929FAF", fontSize: "14px" }}
+        sx={{
+          color: "#929FAF",
+          borderColor: "#929FAF",
+          fontSize: "14px",
+          height: "42px !important",
+        }}
         value={defaultVal || "Select"}
         onChange={handleChange}
       >
