@@ -9,6 +9,7 @@ import { Generics } from "../view/Generics";
 import CheckView from "../view/Sozlamalar/Check";
 import FiliallarView from "../view/Sozlamalar/Filiallar";
 import XabarnomaView from "../view/Sozlamalar/Xabarnoma";
+import SorovnomaView from "../view/Sozlamalar/Sorovnoma";
 
 export const umumiy = [
   { id: 1, icon: Check, element: CheckView, path: "check", title: "Check" },
@@ -29,7 +30,7 @@ export const umumiy = [
   {
     id: 4,
     icon: sorov,
-    element: Generics,
+    element: SorovnomaView,
     path: "sorovnoma",
     title: "So'rovnoma",
   },
