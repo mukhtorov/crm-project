@@ -1,11 +1,15 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import { Container, Status } from "./style";
 // import GenericButton from "../../../Generics/Button";
 import GenericTable from "../../../Generics/Table";
+import { Breadcrumb } from "../../BreadCrumb";
+import GenericButton from "../../../Generics/Button";
+import SorovnomaModal from "./modal";
 
 export const Sorovnomalar = () => {
-  const [open] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const rows = [
     {
@@ -51,11 +55,22 @@ export const Sorovnomalar = () => {
       ),
     },
   ];
+  const onSave = () => {
+    setOpen(false);
+  };
+  const onClose = () => {
+    setOpen(false);
+  };
   return (
     <Container>
+      <SorovnomaModal open={open} onSave={onSave} onClose={onClose} />
+      <Breadcrumb>
+        <GenericButton onClick={() => setOpen(true)} type="add">
+          So'rovnoma qo'shish
+        </GenericButton>
+      </Breadcrumb>
       <GenericTable
         checkbox={false}
-        open={open}
         headCells={cells}
         rows={rows}
       ></GenericTable>

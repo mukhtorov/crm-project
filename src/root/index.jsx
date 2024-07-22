@@ -66,10 +66,6 @@ export const Root = () => {
         })}
 
         <Route path="/" element={<Navigate to={"/analitika"} />} />
-        <Route
-          path="/sozlamalar/umumiy/"
-          element={<Navigate to={"/sozlamalar/umumiy/check"} />}
-        />
         <Route path="*" element={<h1>404 not found</h1>} />
       </Routes>
     </Container>

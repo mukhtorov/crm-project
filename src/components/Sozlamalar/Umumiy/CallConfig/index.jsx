@@ -1,11 +1,14 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import { Container } from "./style";
-// import GenericButton from "../../../Generics/Button";
+import GenericButton from "../../../Generics/Button";
 import GenericTable from "../../../Generics/Table";
+import { Breadcrumb } from "../../BreadCrumb";
+import CallModal from "./modal";
 
 export const CallConfig = () => {
-  const [open] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const rows = [
     {
@@ -47,8 +50,20 @@ export const CallConfig = () => {
       },
     },
   ];
+  const onSave = () => {
+    setOpen(false);
+  };
+  const onClose = () => {
+    setOpen(false);
+  };
   return (
     <Container>
+      <CallModal open={open} onSave={onSave} onClose={onClose} />
+      <Breadcrumb>
+        <GenericButton onClick={() => setOpen(true)} type="add">
+          Rang qo'shish
+        </GenericButton>
+      </Breadcrumb>
       <GenericTable
         checkbox={false}
         open={open}
