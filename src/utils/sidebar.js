@@ -256,7 +256,7 @@ const sidebar = [
       {
         id: `8 - 2`,
         title: "Manager",
-        path: "/sozlamalar/manager",
+        path: "/sozlamalar/manager/tolovlar",
         parentID: 8,
         isPrivate: true,
         element: Generics,
