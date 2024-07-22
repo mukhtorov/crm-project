@@ -4,8 +4,9 @@ import sidebar from "../utils/sidebar";
 import { Sidebar } from "../components/Sidebar";
 import Checkin from "../components/Guruhlar/Guruhlar/Checkin";
 import UmumiySidebar from "../components/Sozlamalar/Umumiy/Sidebar";
-import { manager, umumiy } from "../utils/sozlamalar";
+import { manager, umumiy, ustoz } from "../utils/sozlamalar";
 import ManagerSidebar from "../components/Sozlamalar/Manager/Sidebar";
+import UstozSidebar from "../components/Sozlamalar/Ustoz/Sidebar";
 
 export const Root = () => {
   return (
@@ -33,6 +34,19 @@ export const Root = () => {
                 <Route
                   key={item.id}
                   path={`sozlamalar/manager/${item.path}`}
+                  element={<Element />}
+                />
+              );
+            })}
+          </Route>
+          {/* Sozlamalar Ustoz */}
+          <Route element={<UstozSidebar />}>
+            {ustoz.map((item) => {
+              const { element: Element } = item;
+              return (
+                <Route
+                  key={item.id}
+                  path={`sozlamalar/ustoz/${item.path}`}
                   element={<Element />}
                 />
               );
