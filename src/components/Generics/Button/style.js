@@ -2,6 +2,7 @@ import styled from "styled-components";
 import filter from "../../../assets/icons/filter.svg?react";
 import imp from "../../../assets/icons/import.svg?react";
 import add from "../../../assets/icons/add.svg?react";
+import getValue from "../../../hooks/getStyleValue";
 
 export const Icons = styled.div``;
 
@@ -16,6 +17,7 @@ Icons.Plus = styled(add)``;
 const Button = styled.button`
   display: flex;
   justify-content: center;
+
   align-items: center;
   background-color: transparent;
   border: 1px solid var(--primaryColor);
@@ -28,6 +30,13 @@ const Button = styled.button`
   line-height: 20px;
   gap: 8px;
   white-space: nowrap;
+
+  max-width: ${({ width }) => getValue(width)};
+  margin-top: ${({ mt }) => getValue(mt)};
+  margin-bottom: ${({ mb }) => getValue(mb)};
+  margin-right: ${({ mr }) => getValue(mr)};
+  margin-left: ${({ ml }) => getValue(ml)};
+  margin-left: ${({ align }) => align};
 
   &:active {
     transform: scale(0.98);

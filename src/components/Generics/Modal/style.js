@@ -4,7 +4,8 @@ export const Container = styled.div`
   position: absolute;
   inset: 0;
   background: rgba(37, 62, 95, 0.5);
-  z-index: 999999;
+
+  z-index: 999;
 `;
 
 export const Wrapper = styled.div`
@@ -18,6 +19,13 @@ export const Wrapper = styled.div`
   padding: 32px 48px 32px 48px;
   gap: 16px;
   border-radius: 8px;
+  max-height: 90%;
+
+  overflow: hidden;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export const Footer = styled.div`
