@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useContext } from "react";
 import { media, privateData } from "../../utils/analitics";
 import Subtitle from "../Generics/Subtitle";
@@ -20,7 +21,14 @@ import { MentorContext } from "../../context/mentor";
 
 export const Analitika = () => {
   const [state] = useContext(MentorContext);
-  console.log(state, "sta");
+
+  const url = import.meta.env.VITE_BASE_URL;
+
+  // fetch(`${url}/tabs/media`)
+  fetch(`http://localhost:8000/media`)
+    // .then((res) => res.json())
+    .then((res) => console.log(res, "resss"));
+
   return (
     <Container>
       <Title mb={16}>Analitika</Title>
