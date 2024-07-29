@@ -1,6 +1,6 @@
-/* eslint-disable no-unused-vars */
-import { useContext } from "react";
-import { media, privateData } from "../../utils/analitics";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useContext, useEffect } from "react";
+import { mediaIcon, privateData } from "../../utils/analitics";
 import Subtitle from "../Generics/Subtitle";
 import Title from "../Generics/Title";
 import Email from "./Email";
@@ -17,17 +17,38 @@ import {
   SubCard,
   FooterWrapper,
 } from "./style";
-import { MentorContext } from "../../context/mentor";
+import { AnalyticsContext } from "../../context/analytics";
+import { EmailsContext } from "../../context/emails";
+import { MediaContext } from "../../context/media";
 
 export const Analitika = () => {
-  const [state] = useContext(MentorContext);
+  const [state, dispatch] = useContext(AnalyticsContext);
+  const [email] = useContext(EmailsContext);
+  const [media, mediaDispatch] = useContext(MediaContext);
 
   const url = import.meta.env.VITE_BASE_URL;
 
-  // fetch(`${url}/tabs/media`)
-  fetch(`http://localhost:8000/media`)
-    // .then((res) => res.json())
-    .then((res) => console.log(res, "resss"));
+  const getAnalytics = () => {
+    fetch(`${url}/tabs/analytics_page`)
+      .then((res) => res.json())
+      .then(([res]) => {
+        dispatch({ type: "get", payload: res });
+      });
+  };
+  const getMedia = () => {
+    fetch(`${url}/tabs/media`)
+      .then((res) => res.json())
+      .then((res) => {
+        mediaDispatch({ type: "get", payload: res });
+      });
+  };
+
+  useEffect(() => {
+    getAnalytics();
+    getMedia();
+  }, []);
+
+  console.log(state, "state");
 
   return (
     <Container>
@@ -49,7 +70,7 @@ export const Analitika = () => {
               {/* BOTTOM */}
               <Section title={value.title}>
                 <Title>
-                  <Arrow /> <Counter>{value.count}</Counter>
+                  <Arrow /> <Counter>{state[value.count]}</Counter>
                 </Title>{" "}
                 <Img />
               </Section>
@@ -62,14 +83,16 @@ export const Analitika = () => {
       </Subtitle>
       {/* MEDIA */}
       <Wrapper>
-        {media.map((value) => {
-          const { icon: Icon } = value;
+        {media?.map((value, i) => {
+          const { [i + 1]: Icon } = mediaIcon;
+          console.log(Icon, "icon");
           return (
             <SubCard key={value.id} gap={24} title={value.title}>
               {/* TOP */}
               <Section title={value.title}>
                 <Subtitle>
-                  <Icon className="subicon" /> {value.title}
+                  <Icon className="subicon" />
+                  {value.title}
                 </Subtitle>{" "}
                 <Plus title={value.title} />
               </Section>
@@ -78,7 +101,9 @@ export const Analitika = () => {
                 <Title color={"#52C41A"}>
                   <Arrow /> 22%
                 </Title>
-                <Counter>{value.count}K</Counter>
+                <Counter>
+                  {(Number(value.subscribers) / 1000).toFixed(2)}K
+                </Counter>
               </Section>
             </SubCard>
           );
@@ -86,7 +111,7 @@ export const Analitika = () => {
       </Wrapper>
       <FooterWrapper>
         <FooterWrapper.Email>
-          <Subtitle mt={24} mb={16} count={12}>
+          <Subtitle mt={24} mb={16} count={email.length}>
             Email habarlari
           </Subtitle>
           <Email />

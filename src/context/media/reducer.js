@@ -1,14 +1,11 @@
-export const initialState = {
-  name: "webbrain",
-  length: 123,
-};
+export const initialState = [];
 
 // CRUD - GET, PUT, DELETE, POST
 export const reducer = (state, action) => {
   const type = action?.type?.toLowerCase() || "";
   switch (type) {
     case "get":
-      return state;
+      return action.payload || [];
     case "delete":
       return {};
   }

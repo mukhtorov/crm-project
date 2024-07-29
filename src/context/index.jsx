@@ -1,8 +1,15 @@
 /* eslint-disable react/prop-types */
-import UserContext from "./user";
-import MentorContext from "./mentor";
+import EmailsProvider from "./emails";
+import MoliyaContext from "./moliya";
+import AnalyticsProvider from "./analytics";
+import MediaProvider from "./media";
 
-const provider = [UserContext, MentorContext];
+const provider = [
+  EmailsProvider,
+  AnalyticsProvider,
+  MoliyaContext,
+  MediaProvider,
+];
 
 export const ContextProvider = ({ children }) => {
   return provider.reduceRight(

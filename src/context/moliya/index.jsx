@@ -2,15 +2,15 @@
 import { createContext, useReducer } from "react";
 import { initialState, reducer } from "./reducer";
 
-export const MentorContext = createContext();
+export const MoliyaContext = createContext();
 
-export const MentorProvider = ({ children }) => {
+export const MoliyaProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   return (
-    <MentorContext.Provider value={[state, dispatch]}>
+    <MoliyaContext.Provider value={[state, dispatch]}>
       {children}
-    </MentorContext.Provider>
+    </MoliyaContext.Provider>
   );
 };
 
-export default MentorProvider;
+export default MoliyaProvider;
