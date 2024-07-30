@@ -10,6 +10,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
 import { useNavigate } from "react-router-dom";
+import Spinner from "../Spinner";
 
 function EnhancedTableHead(props) {
   const { onSelectAllClick, numSelected, rowCount, headCells, checkbox } =
@@ -52,7 +53,14 @@ function EnhancedTableHead(props) {
 
 export function GenericTable(props) {
   const [selected, setSelected] = React.useState([]);
-  const { headCells, rows, open, checkbox = true, url } = props;
+  const {
+    headCells,
+    rows,
+    open,
+    checkbox = true,
+    url,
+    spinner = false,
+  } = props;
   const navigate = useNavigate();
 
   const handleSelectAllClick = (event) => {
@@ -108,7 +116,8 @@ export function GenericTable(props) {
         </Table>
       </Box>
 
-      <Paper sx={{ width: "100%", mb: 2 }}>
+      <Paper sx={{ width: "100%", mb: 2, position: "relative" }}>
+        {spinner && <Spinner />}
         <TableContainer>
           <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
             <EnhancedTableHead

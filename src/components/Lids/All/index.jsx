@@ -15,12 +15,15 @@ export const AllLids = () => {
   const [modalOpen, setModal] = useState(false);
   const [modalProps, setModalProps] = useState({});
   const [state, dispatch] = useContext(StudentsContext);
+  const [spinner, setSpinner] = useState(false);
 
   const request = useFetch();
 
   const getStudent = async () => {
+    setSpinner(true);
     let res = await request("/tabs/students");
     dispatch({ type: "get", payload: res });
+    setSpinner(false);
   };
 
   // fetch
@@ -34,6 +37,7 @@ export const AllLids = () => {
     setModalProps(res);
   };
   const onMove = (e, value) => {
+    setSpinner(true);
     e.stopPropagation();
     console.log(value);
     request(`/tabs/students/id/*${value?.id}*`, { method: "DELETE" }).then(
@@ -96,7 +100,12 @@ export const AllLids = () => {
           Lid qo'shish
         </GenericButton>
       </Breadcrumb>
-      <GenericTable open={open} headCells={headCells} rows={state}>
+      <GenericTable
+        open={open}
+        headCells={headCells}
+        rows={state}
+        spinner={spinner}
+      >
         <GenericSelect data={data1} />
         <GenericSelect data={data1} />
         <GenericSelect data={data1} />
