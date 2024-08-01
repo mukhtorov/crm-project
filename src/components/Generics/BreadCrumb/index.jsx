@@ -6,7 +6,6 @@ import Subtitle from "../Subtitle";
 
 export const Breadcrumb = (props) => {
   const location = useLocation();
-  console.log(location, "loc");
   return location.pathname !== "/analitika" ? (
     <Container title={location.state?.parent}>
       <Title>{location.state?.parent}</Title>

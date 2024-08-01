@@ -19,11 +19,9 @@ export const Moliya = () => {
     //   changeWeek(weekCount - 1);
     // else if (date.week(weekCount)[6]?.getDate() === value?.getDate())
     //   changeWeek(weekCount + 1);
-    // // console.log(date.week());
     // setActive(value?.getDate());
     // let date = new Date().getDate();
     let [tdy] = state.filter((val) => val.today == value);
-    console.log(tdy, "toddd");
     setToday(tdy);
     setActive(value);
   };
@@ -40,7 +38,7 @@ export const Moliya = () => {
     fetch(`${url}/tabs/moliya`)
       .then((res) => res.json())
       .then((res) => {
-        // console.log(res, "res");
+        // res, "res");
         let date = new Date().getDate();
         let [tdy] = res.filter((val) => val.today == date);
         setToday(tdy);
@@ -62,7 +60,6 @@ export const Moliya = () => {
         {state.map((value) => {
           let date = new Date(value.day);
           const ac = value.today == active;
-          console.log(date, "day");
           return (
             <DateCard
               active={ac}

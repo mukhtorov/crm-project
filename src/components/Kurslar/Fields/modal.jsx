@@ -9,7 +9,6 @@ import MultipleSelect from "../GroupsList/Multiselect";
 export const AllLidsModal = (props) => {
   const { data } = props;
 
-  console.log(data, "data");
   return (
     <Modal {...props}>
       <Title size="34px">Lid Qo'shish</Title>

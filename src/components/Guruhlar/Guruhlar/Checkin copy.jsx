@@ -15,7 +15,6 @@ const headCells = [
 ];
 
 export const Checkin = () => {
-  console.log("render");
   const [rows, setRows] = useState(students);
   const [cell, setCell] = useState(headCells);
   const date = useDate();

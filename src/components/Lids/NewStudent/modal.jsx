@@ -12,7 +12,6 @@ export const AllLidsModal = (props) => {
     { value: "Frontend", title: "Frontend" },
     { value: "Backend", title: "Backend" },
   ];
-  console.log(data, "data");
   return (
     <Modal {...props}>
       <Title size="34px">Lid Qo'shish</Title>

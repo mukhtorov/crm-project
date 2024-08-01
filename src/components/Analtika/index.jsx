@@ -48,8 +48,6 @@ export const Analitika = () => {
     getMedia();
   }, []);
 
-  console.log(state, "state");
-
   return (
     <Container>
       <Title mb={16}>Analitika</Title>
@@ -85,7 +83,6 @@ export const Analitika = () => {
       <Wrapper>
         {media?.map((value, i) => {
           const { [i + 1]: Icon } = mediaIcon;
-          console.log(Icon, "icon");
           return (
             <SubCard key={value.id} gap={24} title={value.title}>
               {/* TOP */}

@@ -9,6 +9,10 @@ import GenericSelect from "../../Generics/Select";
 import AllLidsModal from "./modal";
 import useFetch from "../../../hooks/useFetch";
 import { StudentsContext } from "../../../context/students";
+import { useLocation, useNavigate } from "react-router-dom";
+import GenericInput from "../../Generics/Input";
+import replace from "../../../hooks/useReplace";
+import useQuery from "../../../hooks/useQuery";
 
 export const AllLids = () => {
   const [open, setOpen] = useState(false);
@@ -16,8 +20,15 @@ export const AllLids = () => {
   const [modalProps, setModalProps] = useState({});
   const [state, dispatch] = useContext(StudentsContext);
   const [spinner, setSpinner] = useState(false);
+  const query = useQuery();
 
+  const navigte = useNavigate();
   const request = useFetch();
+  const location = useLocation();
+  const [filter, setFilter] = useState({
+    name: query.get("name") || "",
+    group: query.get("group"),
+  });
 
   const getStudent = async () => {
     setSpinner(true);
@@ -39,10 +50,8 @@ export const AllLids = () => {
   const onMove = (e, value) => {
     setSpinner(true);
     e.stopPropagation();
-    console.log(value);
     request(`/tabs/students/id/*${value?.id}*`, { method: "DELETE" }).then(
-      (rs) => {
-        console.log(rs, "deleted");
+      () => {
         getStudent();
       }
     );
@@ -80,7 +89,13 @@ export const AllLids = () => {
     // setModal(!modalOpen);
   };
 
-  console.log(state, "stateat");
+  const onChangeFilter = ({ target }) => {
+    const { value, name } = target;
+    setFilter({ ...filter, [name]: value });
+
+    navigte(`${location.pathname}${replace(value, name)}`);
+  };
+
   return (
     <Container>
       <AllLidsModal
@@ -106,6 +121,16 @@ export const AllLids = () => {
         rows={state}
         spinner={spinner}
       >
+        <GenericInput
+          value={filter.name}
+          name="name"
+          onChange={onChangeFilter}
+        />
+        <GenericInput
+          value={filter.group}
+          name="group"
+          onChange={onChangeFilter}
+        />
         <GenericSelect data={data1} />
         <GenericSelect data={data1} />
         <GenericSelect data={data1} />

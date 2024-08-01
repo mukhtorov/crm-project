@@ -8,7 +8,6 @@ import { useEffect, useState } from "react";
 export const Breadcrumb = ({ children }) => {
   const [path, setPath] = useState([]);
   const location = useLocation();
-  console.log(location, "lcopoooo");
   useEffect(() => {
     setPath(
       typeof location.state.parent === "string"
