@@ -3,7 +3,7 @@ export const useReplace = (value, name) => {
   let query = url.searchParams;
 
   if (!value) query.delete(name);
-  else query.set(name, value);
+  else query.set(name, `*${value}*`);
 
   return url.search;
 };

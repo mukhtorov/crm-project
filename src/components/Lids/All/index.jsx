@@ -13,6 +13,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import GenericInput from "../../Generics/Input";
 import replace from "../../../hooks/useReplace";
 import useQuery from "../../../hooks/useQuery";
+import { groups } from "../../../utils/groups";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import moment from "moment";
 
 export const AllLids = () => {
   const [open, setOpen] = useState(false);
@@ -27,12 +32,15 @@ export const AllLids = () => {
   const location = useLocation();
   const [filter, setFilter] = useState({
     name: query.get("name") || "",
-    group: query.get("group"),
+    field: query.get("field"),
+    days: query.get("days"),
+    admin: query.get("admin"),
+    date: query.get("date") || "",
   });
 
-  const getStudent = async () => {
+  const getStudent = async (query = "") => {
     setSpinner(true);
-    let res = await request("/tabs/students");
+    let res = await request(`/tabs/students${query}`);
     dispatch({ type: "get", payload: res });
     setSpinner(false);
   };
@@ -75,12 +83,6 @@ export const AllLids = () => {
     },
   ];
 
-  const data1 = [
-    { value: "uzbek", title: "Uzbek" },
-    { value: "russian", title: "Russian" },
-    { value: "english", title: "English" },
-  ];
-
   const onToggleModal = () => {
     setModal(!modalOpen);
     setModalProps(null);
@@ -92,8 +94,20 @@ export const AllLids = () => {
   const onChangeFilter = ({ target }) => {
     const { value, name } = target;
     setFilter({ ...filter, [name]: value });
+    const query = replace(value, name);
+    navigte(`${location.pathname}${query}`);
+    getStudent(`/search${query}`);
+  };
 
-    navigte(`${location.pathname}${replace(value, name)}`);
+  const onSelectDate = (event) => {
+    console.log(event);
+    const time = moment(event);
+    let date = `${time.date()}/${time.month()}/${time.year()}`;
+    if (!time.date() && !time.month() && !time.year()) date = null;
+    setFilter({ ...filter, date: date });
+    const query = replace(date, "date");
+    navigte(`${location.pathname}${query}`);
+    getStudent(`/search${query}`);
   };
 
   return (
@@ -124,19 +138,41 @@ export const AllLids = () => {
         <GenericInput
           value={filter.name}
           name="name"
+          placeholder="full name"
+          onChange={onChangeFilter}
+        />
+        <GenericSelect
+          width={250}
+          data={groups}
+          name="field"
           onChange={onChangeFilter}
         />
         <GenericInput
-          value={filter.group}
-          name="group"
+          value={filter.week}
+          name="days"
           onChange={onChangeFilter}
+          placeholder="hafta kunlari"
         />
-        <GenericSelect data={data1} />
-        <GenericSelect data={data1} />
-        <GenericSelect data={data1} />
-        <GenericSelect data={data1} />
-        <GenericSelect data={data1} />
-        <GenericSelect data={data1} />
+        <LocalizationProvider dateAdapter={AdapterMoment}>
+          <DatePicker
+            value={moment(filter.date)}
+            // value={filter.date}
+            onChange={onSelectDate}
+            views={["year", "month", "day"]}
+            slotProps={{ textField: { size: "small" } }}
+            componentsProps={{
+              actionBar: {
+                actions: ["clear"],
+              },
+            }}
+          />
+        </LocalizationProvider>
+        <GenericInput
+          value={filter.admin}
+          name="admin"
+          onChange={onChangeFilter}
+          placeholder="moderator"
+        />
       </GenericTable>
     </Container>
   );
