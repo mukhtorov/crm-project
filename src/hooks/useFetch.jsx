@@ -5,6 +5,9 @@ export const useFetch = () => {
     // const { method = "GET" } = options;
     let res = await fetch(`${baseURL}${url}`, {
       method: options?.method || "GET",
+      mode: "cors",
+      headers: options?.headers,
+      body: JSON.stringify(options?.body),
     });
     res = await res.json();
 
