@@ -14,30 +14,32 @@ import moment from "moment";
 import { useEffect, useState } from "react";
 import useFetch from "../../../hooks/useFetch";
 
+const initialState = {
+  name: "",
+  surname: "",
+  group: "", //G11
+  added_date: `${moment().day()}/${moment().month()}/${moment().year()}`,
+  field: "", // Frontend
+  phone: "",
+  status: false,
+  parents: "",
+  admin: "",
+  type: "",
+  payment: 0,
+  time: "",
+};
 export const AllLidsModal = (props) => {
   const request = useFetch();
 
-  const [state, setState] = useState({
-    name: "webbrain",
-    surname: "academy",
-    group: "", //G11
-    added_date: `${moment().day()}/${moment().month()}/${moment().year()}`,
-    field: "", // Frontend
-    phone: "",
-    status: false,
-    parents: "",
-    admin: "Gulchiroy",
-    type: "offline",
-    payment: 0,
-    time: "",
-  });
+  const [state, setState] = useState(initialState);
   const { data } = props;
+  console.log(data, "data");
 
   useEffect(() => {
     if (data) {
       setState({ ...state, ...data });
     }
-  }, []);
+  }, [data]);
 
   const onChangeFilter = ({ target }) => {
     const { value, name } = target;
@@ -45,20 +47,35 @@ export const AllLidsModal = (props) => {
   };
 
   const onSave = () => {
-    console.log("save");
-    request("/tabs/students", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: { state, id: Date.now() },
-    }).then(() => {
-      props.onClose();
-    });
+    // edit
+    if (data?.id) {
+      request(`/tabs/students/id/${data.id}`, {
+        method: "PATCH",
+        body: state,
+      }).then(() => {
+        props.reload();
+        onClose(setState(initialState));
+      });
+    }
+    // add
+    else
+      request("/tabs/students", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: { state, id: Date.now() },
+      }).then(() => {
+        props.onClose(setState(initialState));
+      });
+  };
+
+  const onClose = () => {
+    props?.onClose(setState(initialState));
   };
 
   return (
-    <Modal {...props} onSave={onSave}>
+    <Modal {...props} onSave={onSave} onClose={onClose}>
       <Title size="34px">Lid Qo'shish</Title>
       {/*  name */}
       <Subtitle mt={16} mb={8} color={"#929FAF"}>
@@ -78,7 +95,7 @@ export const AllLidsModal = (props) => {
       <GenericInput
         fontWeight={500}
         width={500}
-        value={state?.name}
+        value={state?.surname}
         name="surname"
         onChange={onChangeFilter}
       />
@@ -111,7 +128,7 @@ export const AllLidsModal = (props) => {
       <GenericSelect
         data={groups}
         width={"100%"}
-        value={state?.group}
+        value={state?.field?.toLowerCase()}
         name="field"
         onChange={onChangeFilter}
       />
@@ -122,7 +139,7 @@ export const AllLidsModal = (props) => {
       <GenericInput
         fontWeight={500}
         width={500}
-        value={state?.name}
+        value={state?.group}
         name="group"
         onChange={onChangeFilter}
       />
@@ -133,8 +150,8 @@ export const AllLidsModal = (props) => {
       <GenericInput
         fontWeight={500}
         width={500}
-        value={state?.parents}
-        name="parents"
+        value={state?.time}
+        name="time"
         onChange={onChangeFilter}
       />
       {/* Kun */}
@@ -144,7 +161,7 @@ export const AllLidsModal = (props) => {
       <GenericInput
         fontWeight={500}
         width={500}
-        value={state?.name}
+        value={state?.days}
         name="days"
         onChange={onChangeFilter}
       />
@@ -156,7 +173,7 @@ export const AllLidsModal = (props) => {
       <LocalizationProvider dateAdapter={AdapterMoment}>
         <DatePicker
           // value={moment(filter.date)}
-          // value={filter.date}
+          value={moment(state.added_date)}
           // onChange={onSelectDate}
           sx={{ width: "100%" }}
           views={["year", "month", "day"]}

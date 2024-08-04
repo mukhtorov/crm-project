@@ -83,9 +83,10 @@ export const AllLids = () => {
     },
   ];
 
-  const onToggleModal = () => {
+  const onToggleModal = (callback) => {
     setModal(!modalOpen);
     setModalProps(null);
+    callback && callback();
   };
   const onSave = () => {
     // setModal(!modalOpen);
@@ -117,6 +118,7 @@ export const AllLids = () => {
         open={modalOpen}
         onClose={onToggleModal}
         onSave={onSave}
+        reload={getStudent}
       />
       <Breadcrumb>
         <GenericButton type="import" onClick={() => setOpen(!open)}>

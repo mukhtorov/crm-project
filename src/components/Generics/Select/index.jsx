@@ -1,12 +1,16 @@
 /* eslint-disable react/prop-types */
 import { FormControl, MenuItem, Select } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const GenericSelect = (props) => {
   const { data, width, onChange, name = "" } = props;
   const [defaultVal, setDefaultVal] = useState(
     props?.value || (data && data[0]?.value)
   );
+
+  useEffect(() => {
+    setDefaultVal(props?.value || (data && data[0]?.value));
+  }, [data, props?.value]);
 
   const handleChange = (event) => {
     setDefaultVal(event.target.value);
