@@ -61,10 +61,7 @@ export const AllLidsModal = (props) => {
     else
       request("/tabs/students", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: { state, id: Date.now() },
+        body: { ...state, id: Date.now() },
       }).then(() => {
         props.onClose(setState(initialState));
       });

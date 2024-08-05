@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-unescaped-entities */
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { GenericTable } from "../../Generics/Table";
 import { Action, Container } from "./style";
 import { Breadcrumb } from "../../Generics/BreadCrumb";
@@ -9,10 +10,17 @@ import AllLidsModal from "./modal";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import moment from "moment";
+import useFetch from "../../../hooks/useFetch";
+import { StudentsContext } from "../../../context/students";
 
 export const NewStudent = () => {
+  const [state, dispatch] = useContext(StudentsContext);
+
   const [open, setOpen] = useState(false);
   const [modalOpen, setModal] = useState(false);
+  const [spinner, setSpinner] = useState(false);
+  const request = useFetch();
+
   const [modalProps, setModalProps] = useState({});
   const onEdit = (e, res) => {
     e.stopPropagation();
@@ -20,12 +28,23 @@ export const NewStudent = () => {
     setModalProps(res);
   };
 
+  const getStudent = async (query = "") => {
+    setSpinner(true);
+    let res = await request(`/tabs/students${query}`);
+    dispatch({ type: "get", payload: res });
+    setSpinner(false);
+  };
+  // fetch
+  useEffect(() => {
+    getStudent();
+  }, []);
+
   const headCells = [
     { id: "name", label: "O'quvchining ismi" },
     { id: "phone", label: "Telefon raqam" },
     { id: "group", label: "Guruh / Fan" },
-    { id: "date", label: "Dars kuni va vaqti" },
-    { id: "addedDate", label: "Qo’shilgan sana" },
+    { id: "days", label: "Dars kuni va vaqti" },
+    { id: "added_date", label: "Qo’shilgan sana" },
     { id: "admin", label: "Moderator" },
     {
       id: "action",
@@ -38,50 +57,18 @@ export const NewStudent = () => {
       ),
     },
   ];
-  let rows = [
-    {
-      id: 1,
-      name: "Webbrain",
-      group: "Frontend",
-      days: "toq kunlari",
-      date: "21.05.2024",
-      addedDate: "21.05.2024",
-      admin: "Webbrain Admin",
-      level: "Beginer",
-      phone: "+998 20 007 1226",
-    },
-    {
-      id: 2,
-      name: "Webbrain",
-      group: "Frontend",
-      date: "21.05.2024",
-      days: "toq kunlari",
-      addedDate: "21.05.2024",
-      admin: "Webbrain Admin",
-      level: "Junior",
-      phone: "+998 20 007 1226",
-    },
-    {
-      id: 3,
-      name: "Webbrain",
-      group: "Frontend",
-      days: "toq kunlari",
-      date: "21.05.2024",
-      addedDate: "21.05.2024",
-      level: "Advanced",
-      admin: "Webbrain Admin",
-      phone: "+998 20 007 1226",
-    },
-  ];
+
   const data1 = [
     { value: "uzbek", title: "Uzbek" },
     { value: "russian", title: "Russian" },
     { value: "english", title: "English" },
   ];
 
-  const onToggleModal = () => {
+  const onToggleModal = (callback) => {
     setModal(!modalOpen);
     setModalProps(null);
+    // callback && callback();
+    callback;
   };
   const onSave = () => {
     // setModal(!modalOpen);
@@ -93,6 +80,7 @@ export const NewStudent = () => {
         open={modalOpen}
         onClose={onToggleModal}
         onSave={onSave}
+        reload={getStudent}
       />
       <Breadcrumb>
         <GenericButton type="import" onClick={() => setOpen(!open)}>
@@ -105,7 +93,12 @@ export const NewStudent = () => {
           Talaba qo'shish
         </GenericButton>
       </Breadcrumb>
-      <GenericTable open={open} headCells={headCells} rows={rows}>
+      <GenericTable
+        open={open}
+        headCells={headCells}
+        rows={state}
+        spinner={spinner}
+      >
         <LocalizationProvider dateAdapter={AdapterMoment}>
           <DatePicker
             defaultValue={moment()}
