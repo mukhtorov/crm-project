@@ -1,4 +1,4 @@
-/* eslint-disable react/no-unescaped-entities */
+ 
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import { Container, Status } from "./style";

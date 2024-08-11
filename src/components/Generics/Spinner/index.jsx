@@ -1,5 +1,5 @@
-/* eslint-disable react/no-unescaped-entities */
-/* eslint-disable react/prop-types */
+ 
+ 
 import { Box } from "@mui/material";
 import { Container } from "./style";
 import { createPortal } from "react-dom";

@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-/* eslint-disable react/prop-types */
+ 
 import { useState } from "react";
 import { Container } from "./style";
 import GenericTable from "../../../Generics/Table";

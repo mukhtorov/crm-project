@@ -14,7 +14,7 @@ export const Status = ({ value }) => {
     case "birinchi":
       return <Icon.Birinchi />;
     default:
-      return "value";
+      return "-";
   }
 };
 

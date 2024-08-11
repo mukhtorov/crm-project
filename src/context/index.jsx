@@ -1,9 +1,9 @@
-/* eslint-disable react/prop-types */
 import EmailsProvider from "./emails";
 import MoliyaContext from "./moliya";
 import AnalyticsProvider from "./analytics";
 import MediaProvider from "./media";
 import StudentsProvider from "./students";
+import GroupsProvider from "./groups";
 
 const provider = [
   EmailsProvider,
@@ -11,6 +11,7 @@ const provider = [
   MoliyaContext,
   MediaProvider,
   StudentsProvider,
+  GroupsProvider,
 ];
 
 export const ContextProvider = ({ children }) => {

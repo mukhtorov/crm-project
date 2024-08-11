@@ -72,13 +72,13 @@ export function GenericTable(props) {
     setSelected([]);
   };
 
-  const handleClick = (event, id) => {
+  const handleClick = (event, row) => {
     if (checkbox) {
-      const selectedIndex = selected.indexOf(id);
+      const selectedIndex = selected.indexOf(row.id);
       let newSelected = [];
 
       if (selectedIndex === -1) {
-        newSelected = newSelected.concat(selected, id);
+        newSelected = newSelected.concat(selected, row.id);
       } else if (selectedIndex === 0) {
         newSelected = newSelected.concat(selected.slice(1));
       } else if (selectedIndex === selected.length - 1) {
@@ -91,7 +91,10 @@ export function GenericTable(props) {
       }
       setSelected(newSelected);
     } else {
-      url && navigate(url, { state: { parent: "Guruhlar", child: "Checkin" } });
+      url &&
+        navigate(`${url}/${row?.title.toLowerCase()}`, {
+          state: { parent: "Guruhlar", child: "Checkin" },
+        });
     }
   };
 
@@ -135,7 +138,7 @@ export function GenericTable(props) {
                 return (
                   <TableRow
                     hover
-                    onClick={(event) => handleClick(event, row.id)}
+                    onClick={(event) => handleClick(event, row)}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}

@@ -1,4 +1,5 @@
-/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable react/react-in-jsx-scope */
+
 import { useContext, useState } from "react";
 import { GenericTable } from "../../Generics/Table";
 import { Action, Container } from "./style";

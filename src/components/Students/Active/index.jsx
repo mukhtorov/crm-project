@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable react/no-unescaped-entities */
+ 
 import { useContext, useEffect, useState } from "react";
 import { GenericTable } from "../../Generics/Table";
 import { Container } from "./style";

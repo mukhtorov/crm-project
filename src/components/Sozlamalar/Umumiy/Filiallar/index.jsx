@@ -40,7 +40,7 @@ export const Filiallar = () => {
       align: "right",
       render: (props) => {
         return (
-          <a href={props?.href} target="_blank">
+          <a href={props?.href} target="_blank" rel="noreferrer">
             {props?.location}
           </a>
         );
