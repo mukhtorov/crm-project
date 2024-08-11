@@ -37,7 +37,15 @@ export const Checkin = () => {
             id: key,
             label: key,
             align: "center",
-            render: (props) => <Status value={props[key]} />,
+            render: (props) => (
+              <Status
+                value={props[key]}
+                title={key}
+                path={id}
+                reload={getData}
+                id={props.id}
+              />
+            ),
           },
         ];
     });

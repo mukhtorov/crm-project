@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import StatusModal from "./StatusModal";
 import { Icon } from "./style";
+import useFetch from "../../../hooks/useFetch";
 
 export const Status = ({ value }) => {
   switch (value) {
@@ -18,20 +19,34 @@ export const Status = ({ value }) => {
   }
 };
 
-const StatusWrapper = ({ value }) => {
+const StatusWrapper = ({ value, title: tl, path, reload, id }) => {
   const [open, setOpen] = useState(false);
   const [align, setAlign] = useState({ x: 0, y: 0 });
+  const request = useFetch();
 
-  useEffect(() => {
-    document.addEventListener("mousedown", () => {
-      setOpen(false);
+  // useEffect(() => {
+  //   document.addEventListener("mousedown", (e) => {
+  //     e.stopImmediatePropagation();
+  //     setOpen(false);
+  //   });
+  // }, []);
+
+  const onChanngeStatus = async (title) => {
+    let res = await request(`/tabs/${path}/id/*${id}*`, {
+      method: "PATCH",
+      body: { [tl]: title },
     });
-  }, []);
+
+    if (res) {
+      reload();
+      setOpen(false);
+    }
+  };
 
   return (
     <div
       onClick={(e) => {
-        setAlign({ x: e.pageX, y: e.pageY });
+        if (!open) setAlign({ x: e.pageX, y: e.pageY });
         setOpen(true);
       }}
       style={{
@@ -39,7 +54,7 @@ const StatusWrapper = ({ value }) => {
         justifyContent: "center",
       }}
     >
-      <StatusModal open={open} align={align} />
+      <StatusModal open={open} align={align} onClick={onChanngeStatus} />
       <Status value={value} />
     </div>
   );
