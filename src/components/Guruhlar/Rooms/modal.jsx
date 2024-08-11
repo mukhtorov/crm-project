@@ -5,46 +5,140 @@ import GenericInput from "../../Generics/Input";
 import Subtitle from "../../Generics/Subtitle";
 import GenericSelect from "../../Generics/Select";
 import Title from "../../Generics/Title";
+import { useEffect, useState } from "react";
+import useFetch from "../../../hooks/useFetch";
+
+const initialState = {
+  name: "",
+  capacity: "0",
+  free_times: "", //G11
+  wifi: "FALSE", // Frontend
+  monitor: "FALSE",
+  status: "FALSE",
+  white_board: "FALSE",
+};
 
 export const AllLidsModal = (props) => {
+  const [state, setState] = useState(initialState);
+  const request = useFetch();
+
   const { data } = props;
-  const selectData = data && [
-    { value: "Frontend", title: "Frontend" },
-    { value: "Backend", title: "Backend" },
+  const status = [
+    { value: "TRUE", title: "TRUE" },
+    { value: "FALSE", title: "FALSE" },
   ];
+  useEffect(() => {
+    if (data) {
+      setState({ ...state, ...data });
+    }
+  }, [data]);
+  const onChangeFilter = ({ target }) => {
+    const { value, name } = target;
+    setState({ ...state, [name]: value });
+  };
+
+  const onSave = () => {
+    // edit
+    if (data?.id) {
+      request(`/tabs/rooms/id/${data.id}`, {
+        method: "PATCH",
+        body: state,
+      }).then(() => {
+        props.reload();
+        props?.onClose(setState(initialState));
+      });
+    }
+    // add
+    else
+      request("/tabs/rooms", {
+        method: "POST",
+        body: { ...state, id: Date.now() },
+      }).then(() => {
+        props.reload();
+        props.onClose(setState(initialState));
+      });
+  };
+
   return (
-    <Modal {...props}>
+    <Modal {...props} onSave={onSave}>
       <Title size="34px">Lid Qo'shish</Title>
       {/* full name */}
       <Subtitle mt={16} mb={8} color={"#929FAF"}>
-        Studentning ismi
+        Xonaing nomi
       </Subtitle>
-      <GenericInput fontWeight={500} width={500} value={data?.name} />
-      {/* yo'nalish */}
+      <GenericInput
+        fontWeight={500}
+        width={500}
+        value={state?.name}
+        name="name"
+        onChange={onChangeFilter}
+      />
+      {/* capacity */}
       <Subtitle mt={16} mb={8} color={"#929FAF"}>
-        Yo'nalishni tanlang
+        Xonaning sig'imi
       </Subtitle>
-      <GenericSelect data={selectData} width={"100%"} value={data?.group} />
+      <GenericInput
+        fontWeight={500}
+        width={500}
+        value={state?.capacity}
+        onChange={onChangeFilter}
+        name="capacity"
+      />
+      {/* capacity */}
+      <Subtitle mt={16} mb={8} color={"#929FAF"}>
+        Bo'sh vaqtlar
+      </Subtitle>
+      <GenericInput
+        fontWeight={500}
+        width={500}
+        value={state?.free_times}
+        onChange={onChangeFilter}
+        name="free_times"
+      />
       {/* daraja */}
       <Subtitle mt={16} mb={8} color={"#929FAF"}>
-        Darajangizni tanlang
+        WI-FI
       </Subtitle>
-      <GenericSelect data={selectData} width={"100%"} value={data?.level} />
+      <GenericSelect
+        onChange={onChangeFilter}
+        data={status}
+        width={"100%"}
+        value={state?.wifi}
+        name="wifi"
+      />
       {/* Kun */}
       <Subtitle mt={16} mb={8} color={"#929FAF"}>
-        Kun tanlang
+        Monitor
       </Subtitle>
-      <GenericSelect data={selectData} width={"100%"} value={data?.days} />
+      <GenericSelect
+        data={status}
+        onChange={onChangeFilter}
+        width={"100%"}
+        value={state?.monitor}
+        name="monitor"
+      />
       {/* Kelish sanasi */}
       <Subtitle mt={16} mb={8} color={"#929FAF"}>
-        Boshlash sanasini tanlang
+        White Boards
       </Subtitle>
-      <GenericSelect data={selectData} width={"100%"} value={data?.date} />
+      <GenericSelect
+        data={status}
+        onChange={onChangeFilter}
+        width={"100%"}
+        value={state?.wifi_board}
+        name="wifi_board"
+      />
       {/* izoh */}
       <Subtitle mt={16} mb={8} color={"#929FAF"}>
-        Izoh
+        Status
       </Subtitle>
-      <GenericInput fontWeight={500} width={500} />
+      <GenericSelect
+        onChange={onChangeFilter}
+        data={status}
+        width={"100%"}
+        value={state?.status}
+        name="status"
+      />
     </Modal>
   );
 };
