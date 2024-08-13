@@ -11,22 +11,63 @@ import { status, type } from "../../../utils/status";
 import { useEffect, useState } from "react";
 import moment from "moment";
 import useFetch from "../../../hooks/useFetch";
-
-const initialState = {
-  title: "",
-  group: "", //G11
-  added_date: `${moment().day()}/${moment().month()}/${moment().year()}`,
-  field: "", // Frontend
-  status: false,
-  type: "Online",
-  start_time: "",
-  end_time: "",
-};
+import MultipleSelect from "./Multiselect";
+import { weeks } from "../../../mock/weeks";
 
 export const AllLidsModal = (props) => {
-  const { data } = props;
+  const { data, category = "" } = props;
+
+  const initialState = {
+    title: "",
+    group: "", //G11
+    added_date: `${moment().day()}/${moment().month()}/${moment().year()}`,
+    field: "", // Frontend
+    status: false,
+    type: "Online",
+    start_time: "",
+    end_time: "",
+    category,
+    days: "",
+    mentors: "0",
+    filial: "",
+    location: "",
+  };
+
   const [state, setState] = useState(initialState);
+  const [mentors, setMentors] = useState([]);
+  const [categroy, setCategory] = useState([]);
+  const [filials, setFilials] = useState([]);
+
   const request = useFetch();
+
+  const getUstoz = async () => {
+    let res = await request("/tabs/mentors");
+    console.log(res, "res");
+    let ment = res.map((val) => val.name);
+    setMentors(ment);
+  };
+  const getFilials = async () => {
+    let res = await request("/tabs/filials");
+    console.log(res, "res");
+    let ment = res.map((val) => {
+      return { ...val, value: val.title };
+    });
+    console.log(ment, "ment");
+    setFilials(ment);
+  };
+
+  const getCategory = async () => {
+    let res = await request("/tabs/category");
+    console.log(res, "res");
+    let ment = res.map((val) => val.category);
+    setCategory(ment);
+  };
+
+  useEffect(() => {
+    getUstoz();
+    getCategory();
+    getFilials();
+  }, []);
 
   const onSave = () => {
     // edit
@@ -35,6 +76,7 @@ export const AllLidsModal = (props) => {
         method: "PATCH",
         body: state,
       }).then(() => {
+        props.onSave();
         props.reload();
         props.onClose(setState(initialState));
       });
@@ -45,6 +87,7 @@ export const AllLidsModal = (props) => {
         method: "POST",
         body: { ...state, id: Date.now() },
       }).then(() => {
+        props.onSave();
         props.reload();
         props.onClose(setState(initialState));
       });
@@ -58,7 +101,12 @@ export const AllLidsModal = (props) => {
 
   const onChangeFilter = ({ target }) => {
     const { value, name } = target;
-    setState({ ...state, [name]: value });
+
+    let loc = filials?.find((val) => val.title === value);
+    console.log(loc, "loc");
+
+    console.log(name, "val");
+    setState({ ...state, [name]: value, location: loc?.src });
   };
   return (
     <Modal {...props} onSave={onSave}>
@@ -108,6 +156,15 @@ export const AllLidsModal = (props) => {
         value={state?.start_time}
         onChange={onChangeFilter}
       />
+      <Subtitle mt={16} mb={8} color={"#929FAF"}>
+        Ustozlar
+      </Subtitle>
+      <MultipleSelect
+        names={mentors}
+        name="mentors"
+        onChange={onChangeFilter}
+      />
+
       {/* Kelish sanasi */}
       <Subtitle mt={16} mb={8} color={"#929FAF"}>
         Tugash vaqti
@@ -140,6 +197,31 @@ export const AllLidsModal = (props) => {
         onChange={onChangeFilter}
         value={state.status}
         name="status"
+      />
+      {/* izoh */}
+      <Subtitle mt={16} mb={8} color={"#929FAF"}>
+        Hafta kunlarinin tanlang
+      </Subtitle>
+      <MultipleSelect names={weeks} name="days" onChange={onChangeFilter} />
+      {/* izoh */}
+      <Subtitle mt={16} mb={8} color={"#929FAF"}>
+        Yo'nalishni tanlang
+      </Subtitle>
+      <MultipleSelect
+        names={categroy}
+        name="categroy"
+        onChange={onChangeFilter}
+      />
+      {/* izoh */}
+      <Subtitle mt={16} mb={8} color={"#929FAF"}>
+        Filialni tanlang
+      </Subtitle>
+      <GenericSelect
+        name="filial"
+        onChange={onChangeFilter}
+        data={filials}
+        width={"100%"}
+        value={state.filial}
       />
     </Modal>
   );

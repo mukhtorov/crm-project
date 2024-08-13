@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 import { useEffect, useState } from "react";
-import { Action, Container } from "./style";
+import { Container } from "./style";
 import { Breadcrumb } from "../../Generics/BreadCrumb";
 import GenericButton from "../../Generics/Button";
 import GroupModal from "./GroupModal";
@@ -83,6 +83,7 @@ export const GroupsList = () => {
         onEdit={onEdit}
         onMove={onMove}
         spinner={spinner}
+        reload={getData}
       />
     </Container>
   );

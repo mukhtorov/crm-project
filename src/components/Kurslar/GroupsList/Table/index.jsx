@@ -11,7 +11,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Button from "../../../Generics/Button";
-import CourseModal from "../CourseModal";
+import CourseModal from "../../../Guruhlar/Guruhlar/modal";
 import { Delete, Edit, Status, TimelineWrapper, Title } from "./style";
 import Spinner from "../../../Generics/Spinner";
 
@@ -24,21 +24,27 @@ const styleCell = {
 };
 
 function Row(props) {
-  const { row, onEdit, onMove } = props;
+  const { row, onEdit, onMove, reload } = props;
   const [open, setOpen] = React.useState(false);
   const [openAdd, setOpenAdd] = React.useState(false);
+
   const onAddKurs = (e) => {
     e.stopPropagation();
     setOpenAdd(!openAdd);
   };
   const onSave = (e) => {
+    setOpenAdd(false);
     e.stopPropagation();
-
-    setOpenAdd(!openAdd);
   };
   return (
     <React.Fragment>
-      <CourseModal open={openAdd} onClose={onAddKurs} onSave={onSave} />
+      <CourseModal
+        open={openAdd}
+        onClose={onAddKurs}
+        onSave={onSave}
+        category={row.category}
+        reload={reload}
+      />
 
       <TableRow
         sx={{
@@ -108,7 +114,15 @@ function Row(props) {
                         <TableCell sx={{ ...styleCell, flex: 2, gap: "8px" }}>
                           <TimelineWrapper>
                             {/* {rw?.timeline?.replace(/ /g, " - ")} */}
-                            {rw?.days}
+
+                            {Array.isArray(
+                              rw?.days.replace(/\[|\]/g, "").split(" - ")
+                            )
+                              ? rw?.days
+                                  .replace(/\[|\]/g, "")
+                                  .split(" - ")
+                                  .join(" - ")
+                              : rw.days}
                           </TimelineWrapper>
                           <TimelineWrapper time>
                             {rw.start_time} - {rw.end_time}
@@ -143,7 +157,7 @@ function Row(props) {
 }
 
 export default function CollapsibleTable(props) {
-  const { rows, onEdit, onMove, spinner = false } = props;
+  const { rows, onEdit, onMove, spinner = false, reload } = props;
   return (
     <TableContainer component={Paper}>
       {spinner && <Spinner />}
@@ -158,7 +172,13 @@ export default function CollapsibleTable(props) {
         </TableHead>
         <TableBody>
           {rows.map((row) => (
-            <Row key={row.id} row={row} onEdit={onEdit} onMove={onMove} />
+            <Row
+              reload={reload}
+              key={row.id}
+              row={row}
+              onEdit={onEdit}
+              onMove={onMove}
+            />
           ))}
         </TableBody>
       </Table>
