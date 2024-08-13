@@ -9,7 +9,7 @@ import { Checkbox } from "@mui/material";
 import { useEffect, useState } from "react";
 import useFetch from "../../../hooks/useFetch";
 
-const initialState = { title: "", category: "" };
+const initialState = { title: "", category: "", filials: [], schedule: "" };
 export const AllLidsModal = (props) => {
   const [state, setState] = useState(initialState);
   const { data } = props;
@@ -19,8 +19,10 @@ export const AllLidsModal = (props) => {
     setState({ ...state, [name]: value });
   };
   useEffect(() => {
+    let filials = data?.filials?.replaceAll(/["' \[\]]/g, "").split(",");
+    console.log(filials, "fii");
     if (data) {
-      setState({ ...state, ...data });
+      setState({ ...state, ...data, filials: filials || [] });
     }
   }, [data]);
 
@@ -46,6 +48,14 @@ export const AllLidsModal = (props) => {
       });
   };
 
+  const onCheck = ({ target }) => {
+    const { name } = target;
+    let filials = state.filials.includes(name)
+      ? state.filials.filter((val) => val !== name)
+      : [...state.filials, name];
+    setState({ ...state, filials });
+  };
+
   return (
     <Modal {...props} onSave={onSave}>
       <Title size="34px">Lid Qo'shish</Title>
@@ -66,24 +76,60 @@ export const AllLidsModal = (props) => {
         <Devider.Filiallar>
           <Devider.Title>Filiallar</Devider.Title>
           <Section>
-            <Checkbox /> Chilonzor
+            <Checkbox
+              onChange={onCheck}
+              checked={state.filials.includes("Chilonzor")}
+              name="Chilonzor"
+            />
+            Chilonzor
           </Section>
           <Section>
-            <Checkbox /> Namangan
+            <Checkbox
+              onChange={onCheck}
+              checked={state.filials.includes("Namangan")}
+              name="Namangan"
+            />
+            Namangan
           </Section>
           <Section>
-            <Checkbox /> Beruniy
+            <Checkbox
+              onChange={onCheck}
+              checked={state.filials.includes("Beruniy")}
+              name="Beruniy"
+            />
+            Beruniy
           </Section>
           <Section>
-            <Checkbox /> Ganga
+            <Checkbox
+              onChange={onCheck}
+              name="Ganga"
+              checked={state.filials.includes("Ganga")}
+            />
+            Ganga
           </Section>
         </Devider.Filiallar>
         <Devider.Role>
           <Devider.Title>Role</Devider.Title>
-          <Input />
-          <Input />
-          <Input />
-          <Input />
+          <Input
+            onChange={onChangeFilter}
+            value={state.schedule}
+            name="schedule"
+          />
+          <Input
+            onChange={onChangeFilter}
+            value={state.schedule}
+            name="schedule"
+          />
+          <Input
+            onChange={onChangeFilter}
+            value={state.schedule}
+            name="schedule"
+          />
+          <Input
+            onChange={onChangeFilter}
+            value={state.schedule}
+            name="schedule"
+          />
         </Devider.Role>
       </Devider>
     </Modal>
