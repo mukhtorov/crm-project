@@ -2,20 +2,20 @@
 
 import { Arrow, Icon, ModalContainer, StatusWrapper } from "./style";
 
-export const StatusModal = ({ open, align }) => {
+export const StatusModal = ({ open, align, onClick }) => {
   return open ? (
     <ModalContainer x={align.x} y={align.y}>
       <Arrow />
-      <StatusWrapper>
+      <StatusWrapper onClick={() => onClick("keldi")}>
         <Icon.Keldi /> Keldi
       </StatusWrapper>
-      <StatusWrapper>
+      <StatusWrapper onClick={() => onClick("birinchi")}>
         <Icon.Birinchi /> Birinchi Dars
       </StatusWrapper>
-      <StatusWrapper>
+      <StatusWrapper onClick={() => onClick("sababli")}>
         <Icon.Sababli /> Sabali
       </StatusWrapper>
-      <StatusWrapper>
+      <StatusWrapper onClick={() => onClick("sababsiz")}>
         <Icon.Sababsiz /> Sababsiz
       </StatusWrapper>
     </ModalContainer>

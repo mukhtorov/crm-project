@@ -1,32 +1,53 @@
+/* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable react/no-unescaped-entities */
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { GenericTable } from "../../Generics/Table";
 import { Action, Container } from "./style";
 import { Breadcrumb } from "../../Generics/BreadCrumb";
 import GenericButton from "../../Generics/Button";
-// import GenericSelect from "../../Generics/Select";
 import AllLidsModal from "./modal";
-// import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-// import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
-// import moment from "moment";
+import useFetch from "../../../hooks/useFetch";
+import { GroupsContext } from "../../../context/groups";
 
 export const Guruhlar = () => {
-  // const [open, setOpen] = useState(false);
+  const [state, dispatch] = useContext(GroupsContext);
+
   const [modalOpen, setModal] = useState(false);
   const [modalProps, setModalProps] = useState({});
+  const [spinner, setSpinner] = useState(false);
+  const request = useFetch();
+
   const onEdit = (e, res) => {
     e.stopPropagation();
     setModal(!modalOpen);
     setModalProps(res);
   };
 
+  const getData = async () => {
+    setSpinner(true);
+    let res = await request(`/tabs/groups`);
+    dispatch({ type: "get", payload: res });
+    setSpinner(false);
+  };
+  // fetch
+  useEffect(() => {
+    getData();
+  }, []);
+  const onMove = (e, value) => {
+    setSpinner(true);
+    e.stopPropagation();
+    request(`/tabs/groups/id/*${value?.id}*`, { method: "DELETE" }).then(() => {
+      getData();
+    });
+  };
+
   const headCells = [
-    { id: "group", label: "Guruh / Fan" },
-    { id: "kurs", label: "Kurs" },
+    { id: "title", label: "Guruh / Fan" },
+    { id: "field", label: "Kurs" },
     { id: "level", label: "Level" },
-    { id: "start", label: "Boshlanish" },
-    { id: "end", label: "Tugash" },
-    { id: "turi", label: "Turi" },
+    { id: "start_time", label: "Boshlanish" },
+    { id: "end_time", label: "Tugash" },
+    { id: "type", label: "Turi" },
     {
       id: "completed",
       label: "Status",
@@ -38,61 +59,12 @@ export const Guruhlar = () => {
       render: (res) => (
         <Action>
           <Action.Edit onClick={(e) => onEdit(e, res)} />
-          <Action.Delete onClick={() => {}} />
+          <Action.Delete onClick={(e) => onMove(e, res)} />
           {/* <Action.Move onClick={onMove} /> */}
         </Action>
       ),
     },
   ];
-  let rows = [
-    {
-      id: 1,
-      group: "Frontend",
-      start: "15:00",
-      end: "17:00",
-      date: "21.05.2024",
-      addedDate: "21.05.2024",
-      admin: "Webbrain Admin",
-      level: "Beginer",
-      phone: "+998 20 007 1226",
-      turi: "offline",
-      kurs: "JavaScript",
-      completed: false,
-    },
-    {
-      id: 1,
-      group: "Frontend",
-      start: "15:00",
-      end: "17:00",
-      date: "21.05.2024",
-      addedDate: "21.05.2024",
-      admin: "Webbrain Admin",
-      level: "Beginer",
-      phone: "+998 20 007 1226",
-      turi: "offline",
-      kurs: "JavaScript",
-      completed: false,
-    },
-    {
-      id: 1,
-      group: "Frontend",
-      start: "15:00",
-      end: "17:00",
-      date: "21.05.2024",
-      addedDate: "21.05.2024",
-      admin: "Webbrain Admin",
-      level: "Beginer",
-      phone: "+998 20 007 1226",
-      turi: "online",
-      kurs: "JavaScript",
-      completed: false,
-    },
-  ];
-  // const data1 = [
-  //   { value: "uzbek", title: "Uzbek" },
-  //   { value: "russian", title: "Russian" },
-  //   { value: "english", title: "English" },
-  // ];
 
   const onToggleModal = () => {
     setModal(!modalOpen);
@@ -108,6 +80,7 @@ export const Guruhlar = () => {
         open={modalOpen}
         onClose={onToggleModal}
         onSave={onSave}
+        reload={getData}
       />
       <Breadcrumb>
         <GenericButton type="add" onClick={() => onToggleModal()}>
@@ -117,20 +90,11 @@ export const Guruhlar = () => {
       <GenericTable
         // open={open}
         headCells={headCells}
-        rows={rows}
+        rows={state}
         checkbox={false}
         url="/guruhlar/guruhlar/checkin"
-      >
-        {/* <LocalizationProvider dateAdapter={AdapterMoment}>
-          <DatePicker
-            defaultValue={moment()}
-            views={["year", "month", "day"]}
-            slotProps={{ textField: { size: "small" } }}
-          />
-        </LocalizationProvider>
-        <GenericSelect data={data1} />
-        <GenericSelect data={data1} /> */}
-      </GenericTable>
+        spinner={spinner}
+      ></GenericTable>
     </Container>
   );
 };

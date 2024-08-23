@@ -8,7 +8,6 @@ import Title from "../../../Generics/Title";
 export const DarajalarModal = (props) => {
   const { data } = props;
 
-  console.log(data, "data");
   return (
     <Modal {...props}>
       <Title size="34px">Daraja Qo'shish</Title>

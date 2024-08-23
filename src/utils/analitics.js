@@ -10,58 +10,33 @@ import ytIcon from "../assets/icons/youtubeIcon.svg?react";
 
 export const privateData = [
   {
-    id: 1,
+    id: "students",
     title: "Talabalar",
     icon: talabalarIcon,
     img: talabalarImg,
-    count: 285,
+    count: "students",
   },
   {
-    id: 2,
+    id: "mentors",
     title: "Mentorlar",
     icon: talabalarIcon,
     img: mentorImg,
     percentage: "",
-    count: 36,
+    count: "mentors",
   },
   {
-    id: 3,
+    id: "filials",
     title: "Filiallar",
     icon: filialIcon,
     img: talabalarImg,
     percentage: "",
-    count: 3,
+    count: "filials",
   },
 ];
-export const media = [
-  {
-    id: 1,
-    title: "Instagram",
-    icon: inIcon,
-    count: 285,
-  },
-  {
-    id: 2,
-    title: "Telegram",
-    icon: tgIcon,
-    count: 36,
-  },
-  {
-    id: 3,
-    title: "Youtube",
-    icon: ytIcon,
-    count: 3,
-  },
-  {
-    id: 4,
-    title: "Linkedin",
-    icon: lnIcon,
-    count: 3,
-  },
-  {
-    id: 5,
-    title: "Tiktok",
-    icon: lnIcon,
-    count: 3,
-  },
-];
+export const mediaIcon = {
+  1: inIcon,
+  2: tgIcon,
+  3: ytIcon,
+  4: lnIcon,
+  5: lnIcon,
+};

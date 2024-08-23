@@ -67,7 +67,11 @@ export const Root = () => {
             })}
           </Route>
           {/* MAIN */}
-          <Route path={"/guruhlar/guruhlar/checkin"} element={<Checkin />} />;
+          <Route
+            path={"/guruhlar/guruhlar/checkin/:id"}
+            element={<Checkin />}
+          />
+          ;
           {sidebar.map((parent) => {
             const ElementParent = parent.element;
             if (parent?.children) {

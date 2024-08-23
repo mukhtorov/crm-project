@@ -8,7 +8,6 @@ import Title from "../../../Generics/Title";
 export const CallModal = (props) => {
   const { data } = props;
 
-  console.log(data, "data");
   return (
     <Modal {...props}>
       <Title size="34px">Sorovnoma Qo'shish</Title>

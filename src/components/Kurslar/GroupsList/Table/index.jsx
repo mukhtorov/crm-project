@@ -11,8 +11,9 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Button from "../../../Generics/Button";
-import CourseModal from "../CourseModal";
+import CourseModal from "../../../Guruhlar/Guruhlar/modal";
 import { Delete, Edit, Status, TimelineWrapper, Title } from "./style";
+import Spinner from "../../../Generics/Spinner";
 
 const styleCell = {
   display: "flex",
@@ -23,21 +24,27 @@ const styleCell = {
 };
 
 function Row(props) {
-  const { row } = props;
+  const { row, onEdit, onMove, reload } = props;
   const [open, setOpen] = React.useState(false);
   const [openAdd, setOpenAdd] = React.useState(false);
+
   const onAddKurs = (e) => {
     e.stopPropagation();
     setOpenAdd(!openAdd);
   };
   const onSave = (e) => {
+    setOpenAdd(false);
     e.stopPropagation();
-
-    setOpenAdd(!openAdd);
   };
   return (
     <React.Fragment>
-      <CourseModal open={openAdd} onClose={onAddKurs} onSave={onSave} />
+      <CourseModal
+        open={openAdd}
+        onClose={onAddKurs}
+        onSave={onSave}
+        category={row.category}
+        reload={reload}
+      />
 
       <TableRow
         sx={{
@@ -70,8 +77,8 @@ function Row(props) {
           align="right"
         >
           <Button onClick={onAddKurs} type="add"></Button>
-          <Edit />
-          <Delete />
+          <Edit onClick={(e) => onEdit(e, row)} />
+          <Delete onClick={(e) => onMove(e, row)} />
         </TableCell>
       </TableRow>
       <TableRow>
@@ -96,7 +103,8 @@ function Row(props) {
                         <TableCell sx={styleCell}>
                           <Title>{rw.level}</Title>
                           <Status active={rw.started}>
-                            {rw.started ? "Active" : "Soon"}
+                            {/* {rw.started ? "Active" : "Soon"} */}
+                            {rw.field}
                           </Status>
                         </TableCell>
                         <TableCell sx={{ ...styleCell, flex: 2 }}>
@@ -105,14 +113,25 @@ function Row(props) {
                         </TableCell>
                         <TableCell sx={{ ...styleCell, flex: 2, gap: "8px" }}>
                           <TimelineWrapper>
-                            {rw.timeline.replace(/ /g, " - ")}
+                            {/* {rw?.timeline?.replace(/ /g, " - ")} */}
+
+                            {Array.isArray(
+                              rw?.days.replace(/\[|\]/g, "").split(" - ")
+                            )
+                              ? rw?.days
+                                  .replace(/\[|\]/g, "")
+                                  .split(" - ")
+                                  .join(" - ")
+                              : rw.days}
                           </TimelineWrapper>
-                          <TimelineWrapper time>{rw.time}</TimelineWrapper>
+                          <TimelineWrapper time>
+                            {rw.start_time} - {rw.end_time}
+                          </TimelineWrapper>
                         </TableCell>
                         <TableCell sx={styleCell}>
                           <Title center>O'qituvchilar</Title>
                           <Title color={"#929FAF"} center>
-                            +{rw.students.length}
+                            +{rw.mentors}
                           </Title>
                         </TableCell>
                         <TableCell
@@ -138,9 +157,10 @@ function Row(props) {
 }
 
 export default function CollapsibleTable(props) {
-  const { rows } = props;
+  const { rows, onEdit, onMove, spinner = false, reload } = props;
   return (
     <TableContainer component={Paper}>
+      {spinner && <Spinner />}
       <Table aria-label="collapsible table">
         <TableHead>
           <TableRow>
@@ -152,7 +172,13 @@ export default function CollapsibleTable(props) {
         </TableHead>
         <TableBody>
           {rows.map((row) => (
-            <Row key={row.id} row={row} />
+            <Row
+              reload={reload}
+              key={row.id}
+              row={row}
+              onEdit={onEdit}
+              onMove={onMove}
+            />
           ))}
         </TableBody>
       </Table>

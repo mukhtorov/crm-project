@@ -39,14 +39,18 @@ Action.Delete = styled(del)`
 export const ModalContainer = styled.div`
   display: flex;
   flex-direction: column;
-  position: absolute;
+  position: fixed;
   border: 1px solid #f0f0f0;
   width: 200px;
   height: 200px;
   background: white;
   border-radius: 8px;
   transform: translate(-50%, 15%);
-  top: ${({ y }) => `${y}px`};
+  top: ${({ y }) => {
+    console.log(y, "style");
+
+    return `${y}px`;
+  }};
   left: ${({ x }) => `${x}px`};
 `;
 

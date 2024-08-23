@@ -1,16 +1,20 @@
 /* eslint-disable react/prop-types */
 import { FormControl, MenuItem, Select } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const GenericSelect = (props) => {
-  const { data, width } = props;
-  console.log(props.mt, "props");
+  const { data, width, onChange, name = "" } = props;
   const [defaultVal, setDefaultVal] = useState(
     props?.value || (data && data[0]?.value)
   );
 
+  useEffect(() => {
+    setDefaultVal(props?.value || (data && data[0]?.value));
+  }, [data, props?.value]);
+
   const handleChange = (event) => {
     setDefaultVal(event.target.value);
+    onChange && onChange(event);
   };
   return (
     <FormControl
@@ -25,6 +29,7 @@ export const GenericSelect = (props) => {
       size="small"
     >
       <Select
+        name={name}
         sx={{
           color: "#929FAF",
           borderColor: "#929FAF",
@@ -40,6 +45,7 @@ export const GenericSelect = (props) => {
               sx={{ color: "#929FAF", fontSize: "14px" }}
               key={item.value}
               value={item?.value}
+              defaultChecked={item?.checked}
             >
               {item?.title}
             </MenuItem>

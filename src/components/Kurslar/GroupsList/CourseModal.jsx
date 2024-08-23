@@ -15,7 +15,7 @@ export const CourseModal = (props) => {
   ];
   return (
     <Modal {...props}>
-      <Title size="34px">Kurs Qo'shish</Title>
+      <Title size="34px">Talaba qo'shish</Title>
       {/* Darajalar */}
       <Subtitle mt={16} mb={8} color={"#929FAF"}>
         Darajalar

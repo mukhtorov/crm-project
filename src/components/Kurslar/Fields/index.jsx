@@ -1,95 +1,74 @@
 /* eslint-disable react/no-unescaped-entities */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GenericTable } from "../../Generics/Table";
 import { Action, Container } from "./style";
 import { Breadcrumb } from "../../Generics/BreadCrumb";
 import GenericButton from "../../Generics/Button";
 // import GenericSelect from "../../Generics/Select";
-import AllLidsModal from "./modal";
+import AllLidsModal from "../GroupsList/GroupModal";
+import useFetch from "../../../hooks/useFetch";
 
-export const Fields = () => {
+export const Fields = (props) => {
   // const [open, setOpen] = useState(false);
   const [modalOpen, setModal] = useState(false);
   const [modalProps, setModalProps] = useState({});
+  const [spinner, setSpinner] = useState(false);
+  const [state, dispatch] = useState([]);
+
+  const { data } = props;
+  const request = useFetch();
+
+  const getData = async () => {
+    setSpinner(true);
+    let category = await request(`/tabs/category`);
+    console.log(category, "cat");
+    dispatch(category || []);
+    setSpinner(false);
+  };
+  // fetch
+  useEffect(() => {
+    getData();
+  }, []);
+
   const onEdit = (e, res) => {
     e.stopPropagation();
     setModal(!modalOpen);
     setModalProps(res);
   };
-  const onMove = (e) => {
+  const onMove = (e, value) => {
+    console.log("move");
+
+    setSpinner(true);
     e.stopPropagation();
+    request(`/tabs/category/id/*${value?.id}*`, { method: "DELETE" }).then(
+      () => {
+        getData();
+      }
+    );
   };
+
   const headCells = [
-    { id: "rooms", label: "Xona" },
-    { id: "capcity", label: "O'rinlar soni" },
+    { id: "title", label: "Yo'nalish" },
     {
-      id: "freetime",
-      label: "Bo'sh vaqti",
-      render: ({ freetime }) => {
-        return (
-          <span>
-            {freetime.map((val) => (
-              <span
-                style={{
-                  background: "whitesmoke",
-                  margin: "5px",
-                  borderRadius: "4px",
-                  padding: "5px",
-                }}
-                key={val}
-              >
-                {val}
-              </span>
-            ))}
-          </span>
-        );
+      id: "filials",
+      label: "Filiallar",
+      render: ({ filials }) => {
+        return <span>{filials.replaceAll(/["'\[\]]/g, "  ")}</span>;
       },
     },
-    { id: "wifi", label: "WI-FI" },
-    { id: "monitor", label: "Monitor" },
-    { id: "blackboard", label: "Blackboard" },
-    { id: "status", label: "Status" },
+    {
+      id: "schedule",
+      label: "Ish vaqti",
+    },
     {
       id: "action",
       label: "",
       render: (res) => (
         <Action>
           <Action.Edit onClick={(e) => onEdit(e, res)} />
-          <Action.Move onClick={onMove} />
+          <Action.Move onClick={(e) => onMove(e, res)} />
         </Action>
       ),
-    },
-  ];
-  let rows = [
-    {
-      id: 1,
-      rooms: "Frontend Team",
-      capcity: 20,
-      freetime: ["14:00~16:00", "21:00"],
-      wifi: "bor",
-      monitor: "bor",
-      blackboard: "yo'q",
-      status: "Ishlayabdi",
-    },
-    {
-      id: 2,
-      rooms: "Backend Team",
-      capcity: 20,
-      freetime: ["11:00~12:00", "21:00"],
-      wifi: "bor",
-      monitor: "yo'q",
-      blackboard: "bor",
-      status: "Remontda",
-    },
-    {
-      id: 3,
-      rooms: "Mobile Team",
-      capcity: 10,
-      freetime: ["14:00~16:00", "21:00"],
-      wifi: "yo'q",
-      monitor: "bor",
-      blackboard: "bor",
-      status: "Ishlayabdi",
     },
   ];
 
@@ -107,6 +86,7 @@ export const Fields = () => {
         open={modalOpen}
         onClose={onToggleModal}
         onSave={onSave}
+        reload={getData}
       />
       <Breadcrumb>
         <GenericButton type="add" onClick={onToggleModal}>
@@ -115,8 +95,9 @@ export const Fields = () => {
       </Breadcrumb>
       <GenericTable
         headCells={headCells}
-        rows={rows}
+        rows={state}
         checkbox={false}
+        spinner={spinner}
       ></GenericTable>
     </Container>
   );

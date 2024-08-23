@@ -10,6 +10,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
 import { useNavigate } from "react-router-dom";
+import Spinner from "../Spinner";
 
 function EnhancedTableHead(props) {
   const { onSelectAllClick, numSelected, rowCount, headCells, checkbox } =
@@ -52,7 +53,14 @@ function EnhancedTableHead(props) {
 
 export function GenericTable(props) {
   const [selected, setSelected] = React.useState([]);
-  const { headCells, rows, open, checkbox = true, url } = props;
+  const {
+    headCells,
+    rows,
+    open,
+    checkbox = true,
+    url,
+    spinner = false,
+  } = props;
   const navigate = useNavigate();
 
   const handleSelectAllClick = (event) => {
@@ -64,13 +72,13 @@ export function GenericTable(props) {
     setSelected([]);
   };
 
-  const handleClick = (event, id) => {
+  const handleClick = (event, row) => {
     if (checkbox) {
-      const selectedIndex = selected.indexOf(id);
+      const selectedIndex = selected.indexOf(row.id);
       let newSelected = [];
 
       if (selectedIndex === -1) {
-        newSelected = newSelected.concat(selected, id);
+        newSelected = newSelected.concat(selected, row.id);
       } else if (selectedIndex === 0) {
         newSelected = newSelected.concat(selected.slice(1));
       } else if (selectedIndex === selected.length - 1) {
@@ -83,7 +91,10 @@ export function GenericTable(props) {
       }
       setSelected(newSelected);
     } else {
-      url && navigate(url, { state: { parent: "Guruhlar", child: "Checkin" } });
+      url &&
+        navigate(`${url}/${row?.title.toLowerCase()}`, {
+          state: { parent: "Guruhlar", child: "Checkin" },
+        });
     }
   };
 
@@ -108,7 +119,8 @@ export function GenericTable(props) {
         </Table>
       </Box>
 
-      <Paper sx={{ width: "100%", mb: 2 }}>
+      <Paper sx={{ width: "100%", mb: 2, position: "relative" }}>
+        {spinner && <Spinner />}
         <TableContainer>
           <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
             <EnhancedTableHead
@@ -126,7 +138,7 @@ export function GenericTable(props) {
                 return (
                   <TableRow
                     hover
-                    onClick={(event) => handleClick(event, row.id)}
+                    onClick={(event) => handleClick(event, row)}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
