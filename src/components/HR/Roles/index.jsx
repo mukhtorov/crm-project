@@ -1,25 +1,41 @@
 /* eslint-disable react/no-unescaped-entities */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GenericTable } from "../../Generics/Table";
 import { Action, Container } from "./style";
 import { Breadcrumb } from "../../Generics/BreadCrumb";
 import GenericButton from "../../Generics/Button";
 import AllLidsModal from "./modal";
+import useFetch from "../../../hooks/useFetch";
 
-export const Roles = () => {
+export const Roles = (props) => {
   const [modalOpen, setModal] = useState(false);
   const [modalProps, setModalProps] = useState({});
+  const [spinner, setSpinner] = useState(false);
+  const [state, dispatch] = useState([]);
+  const { data } = props;
+  const request = useFetch();
+
+  const getData = async () => {
+    setSpinner(true);
+    let category = await request(`/tabs/roles`);
+
+    dispatch(category || []);
+    setSpinner(false);
+  };
+  // fetch
+  useEffect(() => {
+    getData();
+  }, []);
+
   const onEdit = (e, res) => {
     e.stopPropagation();
     setModal(!modalOpen);
     setModalProps(res);
   };
-  const onMove = (e) => {
-    e.stopPropagation();
-  };
+
   const headCells = [
-    { id: "daraja", label: "Daraja" },
-    { id: "izoh", label: "Daraja Izohi" },
+    { id: "title", label: "Daraja" },
+    { id: "message", label: "Daraja Izohi" },
 
     {
       id: "action",
@@ -27,38 +43,11 @@ export const Roles = () => {
       render: (res) => (
         <Action>
           <Action.Edit onClick={(e) => onEdit(e, res)} />
-          <Action.Move onClick={onMove} />
+          <Action.Move onClick={(e) => onMove(e, res)} />
         </Action>
       ),
     },
   ];
-  let rows = [
-    {
-      id: 1,
-      daraja: "Moderator",
-      izoh: "Adminlarga tegishli malumotlar",
-    },
-    {
-      id: 2,
-      daraja: "Director",
-      izoh: "Bazadagi barcha malumotlarni ko'rish huquqi",
-    },
-    {
-      id: 3,
-      daraja: "Manager",
-      izoh: "Barcha malumotlar, Director PM dan tashqari",
-    },
-    {
-      id: 4,
-      daraja: "O'qtuvchi",
-      izoh: "Ustozning darslari holos",
-    },
-  ];
-  // const data1 = [
-  //   { value: "uzbek", title: "Uzbek" },
-  //   { value: "russian", title: "Russian" },
-  //   { value: "english", title: "English" },
-  // ];
 
   const onToggleModal = () => {
     setModal(!modalOpen);
@@ -67,18 +56,25 @@ export const Roles = () => {
   const onSave = () => {
     // setModal(!modalOpen);
   };
+
+  const onMove = (e, value) => {
+    setSpinner(true);
+    e.stopPropagation();
+    request(`/tabs/roles/id/*${value?.id}*`, { method: "DELETE" }).then(() => {
+      getData();
+    });
+  };
   return (
     <Container>
       <AllLidsModal
         data={modalProps}
+        state={state}
         open={modalOpen}
         onClose={onToggleModal}
         onSave={onSave}
+        reload={getData}
       />
       <Breadcrumb>
-        {/* <GenericButton type="filter" onClick={() => setOpen(!open)}>
-          Filter
-        </GenericButton> */}
         <GenericButton type="add" onClick={onToggleModal}>
           Ro'li qo'shish
         </GenericButton>
@@ -86,16 +82,10 @@ export const Roles = () => {
       <GenericTable
         // open={open}
         headCells={headCells}
-        rows={rows}
+        rows={state}
         checkbox={false}
-      >
-        {/* <GenericSelect data={data1} />
-        <GenericSelect data={data1} />
-        <GenericSelect data={data1} />
-        <GenericSelect data={data1} />
-        <GenericSelect data={data1} />
-        <GenericSelect data={data1} /> */}
-      </GenericTable>
+        spinner={spinner}
+      ></GenericTable>
     </Container>
   );
 };
