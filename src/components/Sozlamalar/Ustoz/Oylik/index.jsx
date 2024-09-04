@@ -1,14 +1,21 @@
 /* eslint-disable react/no-unescaped-entities */
- 
-import { useState } from "react";
+
+import { useEffect, useState } from "react";
 import { Container } from "./style";
 import GenericTable from "../../../Generics/Table";
 import { Breadcrumb } from "../../BreadCrumb";
-import DarajalarModal from "./modal";
+import DarajalarModal from "../../modal";
 import GenericButton from "../../../Generics/Button";
+import useFetch from "../../../../hooks/useFetch";
 
 export const Oylik = () => {
   const [open, setOpen] = useState(false);
+  const [data, setData] = useState([]);
+
+  const request = useFetch();
+  const getData = () => {
+    request("/tabs/mentor_status").then((res) => setData(res || []));
+  };
   const onClose = () => {
     setOpen(false);
   };
@@ -16,34 +23,30 @@ export const Oylik = () => {
     setOpen(false);
   };
 
-  const rows = [
-    {
-      id: 1,
-      title: "Manager",
-      foiz: "10 %",
-    },
-    {
-      id: 2,
-      title: "Ustoz",
-      foiz: "20 %",
-    },
-    {
-      id: 3,
-      title: "Adminstration",
-      foiz: "5 %",
-    },
-  ];
   const cells = [
-    { id: "title", label: "Qo'shimcha Foiz Turi" },
+    { id: "status", label: "Lavozim" },
     {
-      id: "foiz",
-      label: "Foiz miqdori",
-      align: "right",
+      id: "half",
+      label: "Yarim Stavka",
+    },
+    {
+      id: "full",
+      label: "Bir stavka",
     },
   ];
+
+  useEffect(() => {
+    getData();
+  }, []);
   return (
     <Container>
-      <DarajalarModal open={open} onClose={onClose} onSave={onSave} />
+      <DarajalarModal
+        open={open}
+        onClose={onClose}
+        onSave={onSave}
+        reload={getData}
+        url="mentor"
+      />
       <Breadcrumb>
         <GenericButton onClick={() => setOpen(true)} type="add">
           Daraja qo'shish
@@ -52,7 +55,7 @@ export const Oylik = () => {
       <GenericTable
         checkbox={false}
         headCells={cells}
-        rows={rows}
+        rows={data}
       ></GenericTable>
     </Container>
   );

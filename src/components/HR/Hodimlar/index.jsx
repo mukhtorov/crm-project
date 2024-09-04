@@ -1,30 +1,54 @@
 /* eslint-disable react/no-unescaped-entities */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GenericTable } from "../../Generics/Table";
 import { Action, Container } from "./style";
 import { Breadcrumb } from "../../Generics/BreadCrumb";
 import GenericButton from "../../Generics/Button";
 // import GenericSelect from "../../Generics/Select";
 import AllLidsModal from "./modal";
+import useFetch from "../../../hooks/useFetch";
 
 export const Hodimlar = () => {
   // const [open, setOpen] = useState(false);
   const [modalOpen, setModal] = useState(false);
   const [modalProps, setModalProps] = useState({});
+  const [state, dispatch] = useState([]);
+  const [spinner, setSpinner] = useState(false);
+
+  const request = useFetch();
+
+  const getData = async () => {
+    setSpinner(true);
+    let category = await request(`/tabs/staffs`);
+
+    dispatch(category || []);
+    setSpinner(false);
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
   const onEdit = (e, res) => {
     e.stopPropagation();
     setModal(!modalOpen);
     setModalProps(res);
   };
-  const onMove = (e) => {
+  const onMove = (e, value) => {
+    console.log(value, "vaallll");
+
+    setSpinner(true);
     e.stopPropagation();
+    request(`/tabs/staffs/id/*${value?.id}*`, { method: "DELETE" }).then(() => {
+      getData();
+    });
   };
   const headCells = [
     { id: "name", label: "To'liq ism" },
-    { id: "birthDate", label: "Tug'ilgan Sana" },
-    { id: "jinsi", label: "Jinsi" },
-    { id: "role", label: "Vazifasi" },
-    { id: "tel", label: "Telefon raqami" },
+    { id: "date_birth", label: "Tug'ilgan Sana" },
+    { id: "sex", label: "Jinsi" },
+    { id: "status", label: "Status" },
+    { id: "phone", label: "Telefon raqami" },
     { id: "filial", label: "Filial" },
     {
       id: "action",
@@ -32,45 +56,11 @@ export const Hodimlar = () => {
       render: (res) => (
         <Action>
           <Action.Edit onClick={(e) => onEdit(e, res)} />
-          <Action.Move onClick={onMove} />
+          <Action.Move onClick={(e) => onMove(e, res)} />
         </Action>
       ),
     },
   ];
-  let rows = [
-    {
-      id: 1,
-      name: "Eshmatov Toshmat",
-      birthDate: "12-26-1994",
-      jinsi: "erkak",
-      role: "Moderator",
-      tel: "+998 20 007 1226",
-      filial: "Chilonzor",
-    },
-    {
-      id: 2,
-      name: "Holmatov Gulmat",
-      birthDate: "12-26-1991",
-      jinsi: "erkak",
-      role: "Moderator",
-      tel: "+998 20 007 1226",
-      filial: "Ganga",
-    },
-    {
-      id: 3,
-      name: "Eshmatov Toshmat",
-      birthDate: "12-26-1992",
-      jinsi: "erkak",
-      role: "Moderator",
-      tel: "+998 20 007 1226",
-      filial: "Beruniy",
-    },
-  ];
-  // const data1 = [
-  //   { value: "uzbek", title: "Uzbek" },
-  //   { value: "russian", title: "Russian" },
-  //   { value: "english", title: "English" },
-  // ];
 
   const onToggleModal = () => {
     setModal(!modalOpen);
@@ -86,6 +76,7 @@ export const Hodimlar = () => {
         open={modalOpen}
         onClose={onToggleModal}
         onSave={onSave}
+        reload={getData}
       />
       <Breadcrumb>
         {/* <GenericButton type="filter" onClick={() => setOpen(!open)}>
@@ -98,16 +89,10 @@ export const Hodimlar = () => {
       <GenericTable
         // open={open}
         headCells={headCells}
-        rows={rows}
+        rows={state}
         checkbox={false}
-      >
-        {/* <GenericSelect data={data1} />
-        <GenericSelect data={data1} />
-        <GenericSelect data={data1} />
-        <GenericSelect data={data1} />
-        <GenericSelect data={data1} />
-        <GenericSelect data={data1} /> */}
-      </GenericTable>
+        spinner={spinner}
+      ></GenericTable>
     </Container>
   );
 };

@@ -1,14 +1,21 @@
 /* eslint-disable react/no-unescaped-entities */
- 
-import { useState } from "react";
+
+import { useEffect, useState } from "react";
 import { Container } from "./style";
 import GenericTable from "../../../Generics/Table";
 import { Breadcrumb } from "../../BreadCrumb";
-import DarajalarModal from "./modal";
+import DarajalarModal from "../../modal";
 import GenericButton from "../../../Generics/Button";
+import useFetch from "../../../../hooks/useFetch";
 
 export const Darajalar = () => {
   const [open, setOpen] = useState(false);
+  const [data, setData] = useState([]);
+
+  const request = useFetch();
+  const getData = () => {
+    request("/tabs/manager_status").then((res) => setData(res || []));
+  };
   const onClose = () => {
     setOpen(false);
   };
@@ -16,40 +23,30 @@ export const Darajalar = () => {
     setOpen(false);
   };
 
-  const rows = [
-    {
-      id: 1,
-      lavozim: "Manager",
-      yarim: "10,000,000 so'm",
-      bir: "20,000,000 so'm",
-    },
-    {
-      id: 2,
-      lavozim: "Ustoz",
-      yarim: "20,000,000 so'm",
-      bir: "30,000,000 so'm",
-    },
-    {
-      id: 3,
-      lavozim: "Adminstration",
-      yarim: "5,000,000 so'm",
-      bir: "10,000,000 so'm",
-    },
-  ];
   const cells = [
-    { id: "lavozim", label: "Lavozim" },
+    { id: "status", label: "Lavozim" },
     {
-      id: "yarim",
+      id: "half",
       label: "Yarim Stavka",
     },
     {
-      id: "bir",
+      id: "full",
       label: "Bir stavka",
     },
   ];
+
+  useEffect(() => {
+    getData();
+  }, []);
   return (
     <Container>
-      <DarajalarModal open={open} onClose={onClose} onSave={onSave} />
+      <DarajalarModal
+        open={open}
+        onClose={onClose}
+        onSave={onSave}
+        reload={getData}
+        url="manager"
+      />
       <Breadcrumb>
         <GenericButton onClick={() => setOpen(true)} type="add">
           Daraja qo'shish
@@ -58,7 +55,7 @@ export const Darajalar = () => {
       <GenericTable
         checkbox={false}
         headCells={cells}
-        rows={rows}
+        rows={data}
       ></GenericTable>
     </Container>
   );

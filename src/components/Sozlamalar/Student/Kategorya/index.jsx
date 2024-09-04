@@ -1,88 +1,94 @@
- 
 /* eslint-disable react/prop-types */
 import { Container, Status } from "./style";
 import GenericTable from "../../../Generics/Table";
 import Switch from "@mui/material/Switch";
 import { Breadcrumb } from "../../BreadCrumb";
+import useFetch from "../../../../hooks/useFetch";
+import { useEffect, useState } from "react";
 
-export const Kategorya = () => {
-  const rows = [
-    {
-      id: 1,
-      jarima: "Ishga kech qolgani uchun",
-      price: "5,000 som",
-    },
-    {
-      id: 2,
-      jarima: "Dars o'tilmagani",
-      price: "25,000 som",
-    },
-    {
-      id: 3,
-      jarima: "To'lov qilmagani",
-      price: "15,000 som",
-    },
-  ];
-  const cells = [
-    { id: "jarima", label: "Jarimalar" },
+export const Tolovlar = () => {
+  const [bonus, setBones] = useState([]);
+  const [fines, setFines] = useState([]);
 
-    {
-      id: "price",
-      label: <Switch />,
-      align: "right",
-      render: (props) => {
-        return <Status align="end">{props.price}</Status>;
-      },
-    },
-  ];
-  const rowsBonus = [
-    {
-      id: 1,
-      bonus: "Yani studentlar uchun",
-      price: "5,000 som",
-    },
-    {
-      id: 2,
-      bonus: "Master class uchun",
-      price: "25,000 som",
-    },
-    {
-      id: 3,
-      bonus: "Sotuvdagi darsliklar uchun",
-      price: "15,000 som",
-    },
-  ];
-  const cellsBonus = [
-    { id: "bonus", label: "Bonuslar" },
+  const request = useFetch();
+  const getData = () => {
+    request("/tabs/student_bonus").then((res) => setBones(res || []));
+    request("/tabs/student_fines").then((res) => setFines(res || []));
+  };
+  const onChange = ({ target: { checked, name } }, b) => {
+    console.log(b, "bonus");
+
+    request(`/tabs/student_${b ? "bonus" : "fines"}/id/${name}`, {
+      method: "PATCH",
+      body: { status: checked ? "TRUE" : "FALSE" },
+    }).then(() => alert("saved"));
+  };
+
+  const fineCells = [
+    { id: "title", label: "Jarimalar" },
 
     {
       id: "price",
-      label: <Switch />,
+      label: "Narhi",
+    },
+    {
+      id: "status",
+      label: "Status",
       align: "right",
       render: (props) => {
         return (
-          <Status align="end" bonus>
-            {props.price}
-          </Status>
+          <Switch
+            defaultChecked={props?.status === "TRUE"}
+            onChange={(e) => onChange(e, false)}
+            name={props.id}
+          />
         );
       },
     },
   ];
+
+  const bonusCell = [
+    { id: "title", label: "Bonuslar" },
+
+    {
+      id: "price",
+      label: "Narhi",
+    },
+    {
+      id: "status",
+      label: "Status",
+      align: "right",
+      render: (props) => {
+        return (
+          <Switch
+            defaultChecked={props?.status === "TRUE"}
+            onChange={(e) => onChange(e, true)}
+            name={props.id}
+          />
+        );
+      },
+    },
+  ];
+
+  useEffect(() => {
+    getData();
+  }, []);
+
   return (
     <Container>
       <Breadcrumb />
       <GenericTable
         checkbox={false}
-        headCells={cellsBonus}
-        rows={rowsBonus}
+        headCells={bonusCell}
+        rows={bonus}
       ></GenericTable>
       <GenericTable
         checkbox={false}
-        headCells={cells}
-        rows={rows}
+        headCells={fineCells}
+        rows={fines}
       ></GenericTable>
     </Container>
   );
 };
 
-export default Kategorya;
+export default Tolovlar;
