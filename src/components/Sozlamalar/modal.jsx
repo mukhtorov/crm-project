@@ -1,11 +1,11 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/no-unescaped-entities */
-import { Modal } from "../../../Generics/Modal";
-import GenericInput from "../../../Generics/Input";
-import Subtitle from "../../../Generics/Subtitle";
-import Title from "../../../Generics/Title";
+import { Modal } from "../Generics/Modal";
+import GenericInput from "../Generics/Input";
+import Subtitle from "../Generics/Subtitle";
+import Title from "../Generics/Title";
 import { useState } from "react";
-import useFetch from "../../../../hooks/useFetch";
+import useFetch from "../../hooks/useFetch";
 
 const initialState = {
   status: "",
@@ -23,7 +23,7 @@ export const DarajalarModal = (props) => {
   const onSave = () => {
     console.log(state, "state");
 
-    request(`/tabs/manager_status`, {
+    request(`/tabs/${props.url || ""}_status`, {
       method: "POST",
       body: { ...state, id: Date.now() },
     }).then(() => {

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Container } from "./style";
 import GenericTable from "../../../Generics/Table";
 import { Breadcrumb } from "../../BreadCrumb";
-import DarajalarModal from "./modal";
+import DarajalarModal from "../../modal";
 import GenericButton from "../../../Generics/Button";
 import useFetch from "../../../../hooks/useFetch";
 
@@ -45,6 +45,7 @@ export const Darajalar = () => {
         onClose={onClose}
         onSave={onSave}
         reload={getData}
+        url="manager"
       />
       <Breadcrumb>
         <GenericButton onClick={() => setOpen(true)} type="add">
