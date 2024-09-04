@@ -1,57 +1,52 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Container, Status } from "./style";
 // import GenericButton from "../../../Generics/Button";
 import GenericTable from "../../../Generics/Table";
 import { Breadcrumb } from "../../BreadCrumb";
 import GenericButton from "../../../Generics/Button";
 import SorovnomaModal from "./modal";
+import useFetch from "../../../../hooks/useFetch";
 
 export const Sorovnomalar = () => {
   const [open, setOpen] = useState(false);
+  const [spinner, setSpinner] = useState(false);
+  const [state, setState] = useState([]);
 
-  const rows = [
-    {
-      id: 1,
-      sorovnoma: "Instagram",
-      all: 230,
-      accepted: 200,
-    },
-    {
-      id: 2,
-      sorovnoma: "Telegram",
-      accepted: 150,
-      all: 230,
-    },
-    {
-      id: 3,
-      sorovnoma: "YouTube",
-      all: 230,
-      accepted: 90,
-    },
-  ];
+  const request = useFetch();
+
+  const getData = () => {
+    setSpinner(true);
+    request("/tabs/media").then((res) => {
+      setState(res);
+      setSpinner(false);
+    });
+  };
+
+  useEffect(() => getData(), []);
+
   const cells = [
     {
-      id: "sorovnoma",
+      id: "title",
       label: "So'rovnoma turi",
-      render: (props) => <Status>{props?.sorovnoma}</Status>,
+      render: (props) => <Status>{props?.title}</Status>,
     },
     {
-      id: "all",
+      id: "lids",
       label: "Barhca Lidlar",
-      render: (props) => <Status>{props?.all}</Status>,
+      render: (props) => <Status>{props?.lids}</Status>,
     },
     {
-      id: "accepted",
+      id: "konversiya",
       label: "Konversiya",
-      render: (props) => <Status>{props.accepted}</Status>,
+      render: (props) => <Status>{props.konversiya}</Status>,
     },
     {
       id: "foiz",
       label: "Foiz",
       render: (props) => (
-        <Status>{parseInt((props.accepted / props.all) * 100)} %</Status>
+        <Status>{parseInt((props.konversiya / props.lids) * 100)} %</Status>
       ),
     },
   ];
@@ -63,7 +58,12 @@ export const Sorovnomalar = () => {
   };
   return (
     <Container>
-      <SorovnomaModal open={open} onSave={onSave} onClose={onClose} />
+      <SorovnomaModal
+        open={open}
+        onSave={onSave}
+        onClose={onClose}
+        reload={getData}
+      />
       <Breadcrumb>
         <GenericButton onClick={() => setOpen(true)} type="add">
           So'rovnoma qo'shish
@@ -72,7 +72,8 @@ export const Sorovnomalar = () => {
       <GenericTable
         checkbox={false}
         headCells={cells}
-        rows={rows}
+        rows={state}
+        spinner={spinner}
       ></GenericTable>
     </Container>
   );
