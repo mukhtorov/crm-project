@@ -1,36 +1,38 @@
- 
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Container, Status } from "./style";
 import GenericTable from "../../../Generics/Table";
 import Switch from "@mui/material/Switch";
 import { Breadcrumb } from "../../BreadCrumb";
+import useFetch from "../../../../hooks/useFetch";
 
 export const Xabarnoma = () => {
   const [open] = useState(false);
+  const [spinner, setSpinner] = useState(false);
+  const [state, setState] = useState([]);
 
-  const rows = [
-    {
-      id: 1,
-      xabarnoma: "Dars vaqtini eslatish",
-      time: "18:00",
-      status: true,
-    },
-    {
-      id: 2,
-      xabarnoma: "Vazifalarni eslatish",
-      time: "20:00",
-      status: false,
-    },
-    {
-      id: 3,
-      xabarnoma: "To'lovlarni eslatish",
-      time: "21:00",
-      status: true,
-    },
-  ];
+  const request = useFetch();
+
+  const getData = () => {
+    setSpinner(true);
+    request("/tabs/notifications").then((res) => {
+      setState(res);
+      setSpinner(false);
+    });
+  };
+
+  useEffect(() => getData(), []);
+
+  const onChange = ({ target: { checked, name } }) => {
+    console.log(checked, name, "event");
+    request(`/tabs/notifications/id/*${name}*`, {
+      method: "PATCH",
+      body: { status: checked ? "TRUE" : "FALSE" },
+    });
+  };
+
   const cells = [
-    { id: "xabarnoma", label: "Xabarnoma turi" },
+    { id: "message", label: "Xabarnoma turi" },
     {
       id: "time",
       label: "Vaqti",
@@ -43,7 +45,13 @@ export const Xabarnoma = () => {
       label: "Faollashtirish",
       align: "right",
       render: (props) => {
-        return <Switch defaultChecked={props?.status} />;
+        return (
+          <Switch
+            name={props?.id}
+            onChange={onChange}
+            defaultChecked={props?.status === "TRUE"}
+          />
+        );
       },
     },
   ];
@@ -54,7 +62,7 @@ export const Xabarnoma = () => {
         checkbox={false}
         open={open}
         headCells={cells}
-        rows={rows}
+        rows={state}
       ></GenericTable>
     </Container>
   );
