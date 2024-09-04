@@ -1,34 +1,32 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Container } from "./style";
 import GenericButton from "../../../Generics/Button";
 import GenericTable from "../../../Generics/Table";
 import { Breadcrumb } from "../../BreadCrumb";
 import CallModal from "./modal";
+import useFetch from "../../../../hooks/useFetch";
 
 export const CallConfig = () => {
   const [open, setOpen] = useState(false);
+  const [spinner, setSpinner] = useState(false);
+  const [state, setState] = useState([]);
 
-  const rows = [
-    {
-      id: 1,
-      type: "Missed",
-      color: "#06ffbd",
-    },
-    {
-      id: 2,
-      type: "Answered",
-      color: "#9b2a2a",
-    },
-    {
-      id: 3,
-      type: "Wrong",
-      color: "#3c00ff",
-    },
-  ];
+  const request = useFetch();
+
+  const getData = () => {
+    setSpinner(true);
+    request("/tabs/status").then((res) => {
+      setState(res || []);
+      setSpinner(false);
+    });
+  };
+
+  useEffect(() => getData(), []);
+
   const cells = [
-    { id: "type", label: "Type" },
+    { id: "title", label: "Type" },
     {
       id: "color",
       label: "Ranglar",
@@ -58,7 +56,12 @@ export const CallConfig = () => {
   };
   return (
     <Container>
-      <CallModal open={open} onSave={onSave} onClose={onClose} />
+      <CallModal
+        reload={getData}
+        open={open}
+        onSave={onSave}
+        onClose={onClose}
+      />
       <Breadcrumb>
         <GenericButton onClick={() => setOpen(true)} type="add">
           Rang qo'shish
@@ -68,7 +71,7 @@ export const CallConfig = () => {
         checkbox={false}
         open={open}
         headCells={cells}
-        rows={rows}
+        rows={state}
       ></GenericTable>
     </Container>
   );
